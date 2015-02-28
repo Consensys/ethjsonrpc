@@ -1,115 +1,234 @@
-# © Christian Lundkvist
-import json
-import httplib
+# © Christian Lundkvist and Stefan George
+
+from pyethereum.abi import ContractTranslator
 import serpent
-
-def jsonrpc_query(host, port, query, id_string = ''):
-
-    complete_query = query.copy()
-    complete_query.update({'id' : id_string, 'jsonrpc' : '2.0'})
-    params = json.JSONEncoder().encode(complete_query)
-    
-    conn = httplib.HTTPConnection(host, port)
-    conn.request("POST", "", params)
-
-    resp = conn.getresponse()
-    response_object = resp.read().decode()
-    response_dict = json.loads(response_object)
-    conn.close()
-    
-    return response_dict
+import requests
+import json
 
 
 class EthJsonRpc:
-    
-    def __init__(self, host, port):
+
+    def __init__(self, host, port, contract_code=None, contract_address=None):
         self.host = host
         self.port = port
+        self.contract_code = None
+        self.signature = None
+        self.translation = None
+        self.contract_address = contract_address
+        self.update_code(contract_code)
 
-    def call(self, method, params):
-        resp = jsonrpc_query(self.host, self.port, {'method' : method, 'params' : params})
+    def update_code(self, contract_code):
+        if contract_code:
+            self.contract_code = contract_code
+            self.signature = serpent.mk_full_signature(contract_code)
+            self.translation = ContractTranslator(self.signature)
 
-        if 'result' in resp:
-            return resp['result']
-        else:
-            raise RuntimeError('Error from RPC call: ' + str(resp))
+    def _call(self, method, params=None, _id=0):
+        if params is None:
+            params = []
+        data = json.dumps({
+            'jsonrpc': '2.0',
+            'method': method,
+            'params': params,
+            'id': _id
+        })
+        response = requests.post("http://{}:{}".format(self.host, self.port), data=data).json()
+        return response['result']
 
-    def send_tx_abi(self, to, funid, abi, value, from_addr=None, gas=None, gas_price=None):
-        data = '0x' + '{0:02x}'.format(funid)
-        if isinstance(abi, list):
-            for d in abi:
-                if (len(d) < 64):
-                    data += '0' * (64 - len(d)) + d
-                else:
-                    data += d
-        else:
-            raise RuntimeError('Transaction ABI must be a list')
+    def create_contract(self, contract_code, value=0, from_address=None, gas=0, gas_price=0):
+        self.update_code(contract_code)
+        byte_code = serpent.compile(contract_code)
+        self.contract_address = self.eth_transact(data=byte_code, value=value, from_address=from_address, gas=gas, gas_price=gas_price)
+        return self.contract_address
 
-        tx_params = {'to' : to,
-                     'data' : data,
-                     'from' : from_addr,
-                     'gas' : gas,
-                     'gasPrice' : gas_price,
-                     'value' : str(value)
-                     }
-            
-        return self.call('eth_transact', [tx_params])
+    def eth_transact(self, to_address=None, function_name=None, data=None, value=0, from_address=None, gas=0, gas_price=0):
+        if function_name:
+            if data is None:
+                data = []
+            data = self.translation.encode(function_name, data)
+        params = {
+            'to': to_address,
+            'data': '0x{}'.format(data.encode('hex')) if data else None,
+            'from': from_address,
+            'gas': hex(gas) if gas else None,
+            'gasPrice': hex(gas_price) if gas_price else None,
+            'value': hex(value) if value else None
+        }
+        response = self._call('eth_transact', [params])
+        return response
 
-    def make_call(self, to, funid, abi, value, from_addr=None, gas=None, gas_price=None):
-        data = '0x' + '{0:02x}'.format(funid)
-        if isinstance(abi, list):
-            for d in abi:
-                if (len(d) < 64):
-                    data += '0' * (64 - len(d)) + d
-                else:
-                    data += d
-        else:
-            raise RuntimeError('Transaction ABI must be a list')
+    def eth_call(self, to_address, function_name, data=None):
+        if data is None:
+            data = []
+        data = self.translation.encode(function_name, data)
+        params = {
+            'to': to_address,
+            'data': '0x{}'.format(data.encode('hex'))
+        }
+        response = self._call('eth_call', [params])
+        if function_name:
+            response = self.translation.decode(function_name, response[2:].decode('hex'))
+        return response
 
-        tx_params = {'to' : to,
-                     'data' : data,
-                     'from' : from_addr,
-                     'gas' : gas,
-                     'gasPrice' : gas_price,
-                     'value' : str(value)
-                     }
-            
-        return self.call('eth_call', [tx_params])
+    def web3_sha3(self, data):
+        data = str(data).encode('hex')
+        return self._call('web3_sha3', [data])
 
-    def send_tx(self, destination, msg, value, from_addr=None, gas=None, gas_price=None):
+    def eth_coinbase(self):
+        return self._call('eth_coinbase')
 
-        data = '0x'
-        if isinstance(msg, list):
-            for d in msg:
-                if (len(d) < 64):
-                    data += '0' * (64 - len(d)) + d
-                else:
-                    data += d
-        elif isinstance(msg, str):
-            data = msg
-        else:
-            raise RuntimeError('Unsupported message type in send_tx')
+    def eth_setCoinbase(self, data):
+        return self._call('eth_setCoinbase', [data])
 
-        tx_params = {'to' : destination,
-                     'data' : data,
-                     'from' : from_addr,
-                     'gas' : gas,
-                     'gasPrice' : gas_price,
-                     'value' : str(value)
-                     }
-            
-        return self.call('eth_transact', [tx_params])
+    def eth_listening(self):
+        return self._call('eth_listening')
 
-    def create_contract(self, serpent_code, endowment, from_addr=None, gas=None, gas_price=None):
+    def eth_setListening(self, data):
+        return self._call('eth_setListening', [data])
 
-        byte_code = '0x' + serpent.compile(serpent_code).encode('hex')
+    def eth_mining(self):
+        return self._call('eth_mining')
 
-        contract_params = {'to' : None,
-                           'from' : from_addr,
-                           'data' : byte_code,
-                           'value' : str(endowment),
-                           'gas' : gas,
-                           'gasPrice' : gas_price
-                           }
-            
-        return self.call('eth_transact', [contract_params])
+    def eth_setMining(self, data):
+        return self._call('eth_setMining', [data])
+
+    def eth_gasPrice(self):
+        return self._call('eth_gasPrice')
+
+    def eth_accounts(self):
+        return self._call('eth_accounts')
+
+    def eth_peerCount(self):
+        return self._call('eth_peerCount')
+
+    def eth_defaultBlock(self):
+        return self._call('eth_defaultBlock')
+
+    def eth_setDefaultBlock(self, data):
+        return self._call('eth_setDefaultBlock', [data])
+
+    def eth_number(self):
+        return self._call('eth_number')
+
+    def eth_balanceAt(self, data):
+        return self._call('eth_balanceAt', [data])
+
+    def eth_stateAt(self, data):
+        return self._call('eth_stateAt', [data])
+
+    def eth_storageAt(self, data):
+        return self._call('eth_storageAt', [data])
+
+    def eth_countAt(self, data):
+        return self._call('eth_countAt', [data])
+
+    def eth_transactionCountByHash(self, data):
+        return self._call('eth_transactionCountByHash', [data])
+
+    def eth_transactionCountByNumber(self, data):
+        return self._call('eth_transactionCountByNumber', [data])
+
+    def eth_uncleCountByHash(self, data):
+        return self._call('eth_uncleCountByHash', [data])
+
+    def eth_uncleCountByNumber(self, data):
+        return self._call('eth_uncleCountByNumber' [data])
+
+    def eth_codeAt(self, data):
+        return self._call('eth_codeAt', [data])
+
+    def eth_flush(self):
+        return self._call('eth_flush')
+
+    def eth_blockByHash(self, data):
+        return self._call('eth_blockByHash', [data])
+
+    def eth_blockByNumber(self, data):
+        return self._call('eth_blockByNumber', [data])
+
+    def eth_transactionByHash(self, data):
+        return self._call('eth_transactionByHash', [data])
+
+    def eth_transactionByNumber(self, data):
+        return self._call('eth_transactionByNumber', [data])
+
+    def eth_uncleByHash(self, data):
+        return self._call('eth_uncleByHash', [data])
+
+    def eth_uncleByNumber(self, data):
+        return self._call('eth_uncleByNumber', [data])
+
+    def eth_compilers(self):
+        return self._call('eth_compilers')
+
+    def eth_lll(self, data):
+        return self._call('eth_lll', [data])
+
+    def eth_solidity(self, data):
+        return self._call('eth_solidity', [data])
+
+    def eth_serpent(self, data):
+        return self._call('eth_serpent', [data])
+
+    def eth_newFilter(self, data):
+        return self._call('eth_newFilter', [data])
+
+    def eth_newFilterString(self, data):
+        return self._call('eth_newFilterString', [data])
+
+    def eth_uninstallFilter(self, data):
+        return self._call('eth_uninstallFilter', [data])
+
+    def eth_changed(self, data):
+        return self._call('eth_changed', [data])
+
+    def eth_filterLogs(self, data):
+        return self._call('eth_filterLogs', [data])
+
+    def eth_logs(self, data):
+        return self._call('eth_logs', [data])
+
+    def eth_getWork(self):
+        return self._call('eth_getWork')
+
+    def eth_submitWork(self, data):
+        return self._call('eth_submitWork', [data])
+
+    def db_put(self, data):
+        return self._call('db_put', [data])
+
+    def db_get(self, data):
+        return self._call('db_get', [data])
+
+    def db_putString(self, data):
+        return self._call('db_putString', [data])
+
+    def db_getString(self, data):
+        return self._call('db_getString', [data])
+
+    def shh_post(self, data):
+        return self._call('shh_post', [data])
+
+    def shh_newIdentity(self):
+        return self._call('shh_newIdentity')
+
+    def shh_haveIdentity(self, data):
+        return self._call('shh_haveIdentity', [data])
+
+    def shh_newGroup(self, data):
+        return self._call('shh_newGroup', [data])
+
+    def shh_addToGroup(self, data):
+        return self._call('shh_addToGroup', [data])
+
+    def shh_newFilter(self, data):
+        return self._call('shh_newFilter', [data])
+
+    def shh_uninstallFilter(self, data):
+        return self._call('shh_uninstallFilter', [data])
+
+    def shh_changed(self, data):
+        return self._call('shh_changed', [data])
+
+    def shh_getMessages(self, data):
+        return self._call('shh_getMessages', [data])
