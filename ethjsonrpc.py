@@ -1,4 +1,4 @@
-# © Christian Lundkvist and Stefan George
+# (C) Christian Lundkvist and Stefan George
 
 from pyethereum.abi import ContractTranslator
 import serpent
