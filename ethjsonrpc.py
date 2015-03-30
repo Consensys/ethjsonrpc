@@ -50,9 +50,9 @@ class EthJsonRpc:
             'to': to_address,
             'data': '0x{}'.format(data.encode('hex')) if data else None,
             'from': from_address,
-            'gas': hex(gas) if gas else None,
-            'gasPrice': hex(gas_price) if gas_price else None,
-            'value': hex(value) if value else None
+            'gas': '0x{0:x}'.format(gas) if gas else None,
+            'gasPrice': '0x{0:x}'.format(gas_price) if gas_price else None,
+            'value': '0x{0:x}'.format(value) if value else None
         }
         response = self._call('eth_transact', [params])
         return response
