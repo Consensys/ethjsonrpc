@@ -39,6 +39,9 @@ class EthJsonRpc:
     def create_contract(self, contract_code, value=0, from_address=None, gas=0, gas_price=0):
         self.update_code(contract_code)
         byte_code = serpent.compile(contract_code)
+        if from_address is None:
+            from_address = self.eth_accounts()[0]
+
         self.contract_address = self.eth_sendTransaction(data=byte_code, value=value, from_address=from_address, gas=gas, gas_price=gas_price)
         return self.contract_address
 
@@ -46,10 +49,10 @@ class EthJsonRpc:
         """
         Creates new message call transaction or a contract creation, if the data field contains code.
         """
-        if code:
-            self.update_code(code)
-        else:
-            self.update_code(self.eth_getCode(to_address))
+        # if code:
+        #     self.update_code(code)
+        # else:
+        #     self.update_code(self.eth_getCode('0x' + to_address.encode('hex')))
         if function_name:
             if data is None:
                 data = []
@@ -68,10 +71,10 @@ class EthJsonRpc:
         """
         Executes a new message call immediately without creating a transaction on the block chain.
         """
-        if code:
-            self.update_code(code)
-        else:
-            self.update_code(self.eth_getCode(to_address))
+        #if code:
+        #    self.update_code(code)
+        #else:
+        #    self.update_code(self.eth_getCode('0x' + to_address.encode('hex')))
         if data is None:
             data = []
         data = self.translation.encode(function_name, data)
