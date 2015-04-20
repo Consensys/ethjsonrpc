@@ -30,29 +30,33 @@ class EthJsonRpc:
             'params': params,
             'id': _id
         })
-        response = requests.post("http://{}:{}".format(self.host, self.port), data=data).json()
+        response = requests.post("http://{0}:{1}".format(self.host, self.port), data=data).json()
         if 'result' in response:
             return response['result']
         else:
             raise RuntimeError('Error from RPC call. Returned payload: {0}'.format(response))
 
-    def create_contract(self, contract_code, value=0, from_address=None, gas=0, gas_price=0):
+    def create_contract(self, contract_code, value=0, from_address=None, gas=None, gas_price=None):
         self.update_code(contract_code)
         byte_code = serpent.compile(contract_code)
-        if from_address is None:
-            from_address = self.eth_accounts()[0]
 
         self.contract_address = self.eth_sendTransaction(data=byte_code, value=value, from_address=from_address, gas=gas, gas_price=gas_price)
         return self.contract_address
 
-    def eth_sendTransaction(self, to_address=None, function_name=None, data=None, value=0, from_address=None, gas=0, gas_price=0, code=None):
+    def eth_sendTransaction(self, to_address=None, function_name=None, data=None, value=0, from_address=None, gas=None, gas_price=None):
         """
         Creates new message call transaction or a contract creation, if the data field contains code.
         """
-        # if code:
-        #     self.update_code(code)
-        # else:
-        #     self.update_code(self.eth_getCode('0x' + to_address.encode('hex')))
+        # Default values for gas and gas_price
+        if gas is None:
+            gas = 500000
+        if gas_price is None:
+            gas_price = 10000
+
+        # Default value for from_address
+        if from_address is None:
+            from_address = self.eth_accounts()[0]
+
         if function_name:
             if data is None:
                 data = []
@@ -60,10 +64,10 @@ class EthJsonRpc:
         params = {
             'from': from_address,
             'to': to_address,
-            'gas': hex(gas) if gas else None,
-            'gasPrice': hex(gas_price) if gas_price else None,
-            'value': hex(value) if value else None,
-            'data': '0x{}'.format(data.encode('hex')) if data else None
+            'gas': '0x{0:x}'.format(gas) if gas else None,
+            'gasPrice': '0x{0:x}'.format(gas_price) if gas_price else None,
+            'value': '0x{0:x}'.format(value) if value else None,
+            'data': '0x{0}'.format(data.encode('hex')) if data else None
         }
         return self._call('eth_sendTransaction', [params])
 
@@ -71,17 +75,13 @@ class EthJsonRpc:
         """
         Executes a new message call immediately without creating a transaction on the block chain.
         """
-        #if code:
-        #    self.update_code(code)
-        #else:
-        #    self.update_code(self.eth_getCode('0x' + to_address.encode('hex')))
         if data is None:
             data = []
         data = self.translation.encode(function_name, data)
         params = [
             {
                 'to': to_address,
-                'data': '0x{}'.format(data.encode('hex'))
+                'data': '0x{0}'.format(data.encode('hex'))
             },
             default_block
         ]
