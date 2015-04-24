@@ -364,22 +364,24 @@ class EthJsonRpc:
     def shh_post(self, topics, payload, priority, ttl, _from=None, to=None):
         """
         Sends a whisper message.
+        ttl is time-to-live in seconds (integer)
+        priority is integer
         """
         whisper_object = {
             'from': _from,
             'to': to,
             'topics': topics,
             'payload': payload,
-            'priority': priority,
-            'ttl': ttl
+            'priority': hex(priority),
+            'ttl': hex(ttl)
         }
         return self._call('shh_post', [whisper_object])
 
-    def shh_newIdentinty(self):
+    def shh_newIdentity(self):
         """
         Creates new whisper identity in the client.
         """
-        return self._call('shh_newIdentinty')
+        return self._call('shh_newIdentity')
 
     def shh_hasIdentity(self, address):
         """
