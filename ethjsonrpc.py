@@ -299,19 +299,19 @@ class EthJsonRpc:
         """
         Uninstalls a filter with given id. Should always be called when watch is no longer needed. Additonally Filters timeout when they aren't requested with eth_getFilterChanges for a period of time.
         """
-        return self._call('eth_uninstallFilter', [hex(filter_id)])
+        return self._call('eth_uninstallFilter', [filter_id])
 
     def eth_getFilterChanges(self, filter_id):
         """
         Polling method for a filter, which returns an array of logs which occurred since last poll.
         """
-        return self._call('eth_getFilterChanges', [hex(filter_id)])
+        return self._call('eth_getFilterChanges', [filter_id])
 
     def eth_getFilterLogs(self, filter_id):
         """
         Returns an array of all logs matching filter with given id.
         """
-        return self._call('eth_getFilterLogs', [hex(filter_id)])
+        return self._call('eth_getFilterLogs', [filter_id])
 
     def eth_getLogs(self, filter_object):
         """
@@ -414,16 +414,16 @@ class EthJsonRpc:
         Uninstalls a filter with given id. Should always be called when watch is no longer needed.
         Additonally Filters timeout when they aren't requested with shh_getFilterChanges for a period of time.
         """
-        return self._call('shh_uninstallFilter', [hex(filter_id)])
+        return self._call('shh_uninstallFilter', [filter_id])
 
     def shh_getFilterChanges(self, filter_id):
         """
         Polling method for whisper filters.
         """
-        return self._call('shh_getFilterChanges', [hex(filter_id)])
+        return self._call('shh_getFilterChanges', [filter_id])
 
     def shh_getMessages(self, filter_id):
         """
         Get all messages matching a filter, which are still existing in the node.
         """
-        return self._call('shh_getMessages', [hex(filter_id)])
+        return self._call('shh_getMessages', [filter_id])
