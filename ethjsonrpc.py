@@ -9,7 +9,7 @@ from ethereum.abi import ContractTranslator, encode_abi, decode_abi
 class EthJsonRpc(object):
 
     DEFAULT_GAS_FOR_TRANSACTIONS = 500000
-    DEFAULT_GAS_PRICE = 10000
+    DEFAULT_GAS_PRICE = 10*10**12 #10 szabo
 
     def __init__(self, host, port, contract_code=None, contract_address=None):
 
