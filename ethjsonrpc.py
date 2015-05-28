@@ -408,6 +408,12 @@ class EthJsonRpc(object):
         """
         return self._call('eth_newBlockFilter', [default_block])
 
+    def eth_newPendingTransactionFilter(self):
+        """
+        Creates a filter object to notify when new pending transactions arrive.
+        """
+        return self._call('eth_newPendingTransactionFilter', [])
+
     def eth_uninstallFilter(self, filter_id):
         """
         Uninstalls a filter with given id. Should always be called when watch is no longer needed. Additionally Filters timeout when they aren't requested with eth_getFilterChanges for a period of time.
