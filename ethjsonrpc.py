@@ -341,11 +341,6 @@ class EthJsonRpc(object):
         """
         return self._call('eth_getBlockByHash', [block_hash, transaction_objects])
 
-    def eth_flush(self):
-        """
-        """
-        return self._call('eth_flush')
-
     def eth_getBlockByNumber(self, block_number, transaction_objects=True):
         """
         Returns information about a block by hash.
