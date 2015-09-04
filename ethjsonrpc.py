@@ -185,24 +185,6 @@ class EthJsonRpc(object):
         }
         return self._call('eth_sendTransaction', [params])
 
-    def eth_call(self, to_address, function_name, data=None, code=None, default_block="latest"):
-        """
-        Executes a new message call immediately without creating a transaction on the block chain.
-        """
-        data = data or []
-        data = self.translation.encode(function_name, data)
-        params = [
-            {
-                'to': to_address,
-                'data': '0x{0}'.format(data.encode('hex'))
-            },
-            default_block
-        ]
-        response = self._call('eth_call', params)
-        if function_name:
-            response = self.translation.decode(function_name, response[2:].decode('hex'))
-        return response
-
     def web3_clientVersion(self):
         """
         Returns the current client version.
@@ -222,17 +204,17 @@ class EthJsonRpc(object):
         """
         return self._call('net_version')
 
-    def net_listening(self):
-        """
-        Returns true if client is actively listening for network connections.
-        """
-        return self._call('net_listening')
-
     def net_peerCount(self):
         """
         Returns number of peers currently connected to the client.
         """
         return self._call('net_peerCount')
+
+    def net_listening(self):
+        """
+        Returns true if client is actively listening for network connections.
+        """
+        return self._call('net_listening')
 
     def eth_version(self):
         """
@@ -318,6 +300,24 @@ class EthJsonRpc(object):
         """
         return self._call('eth_getCode', [address, default_block])
 
+    def eth_call(self, to_address, function_name, data=None, code=None, default_block="latest"):
+        """
+        Executes a new message call immediately without creating a transaction on the block chain.
+        """
+        data = data or []
+        data = self.translation.encode(function_name, data)
+        params = [
+            {
+                'to': to_address,
+                'data': '0x{0}'.format(data.encode('hex'))
+            },
+            default_block
+        ]
+        response = self._call('eth_call', params)
+        if function_name:
+            response = self.translation.decode(function_name, response[2:].decode('hex'))
+        return response
+
     def eth_getBlockByHash(self, block_hash, transaction_objects=True):
         """
         Returns information about a block by hash.
@@ -371,17 +371,17 @@ class EthJsonRpc(object):
         """
         return self._call('eth_getCompilers')
 
-    def eth_compileSolidity(self, code):
-        """
-        Returns compiled solidity code.
-        """
-        return self._call('eth_compileSolidity', [code])
-
     def eth_compileLLL(self, code):
         """
         Returns compiled LLL code.
         """
         return self._call('eth_compileLLL', [code])
+
+    def eth_compileSolidity(self, code):
+        """
+        Returns compiled solidity code.
+        """
+        return self._call('eth_compileSolidity', [code])
 
     def eth_compileSerpent(self, code):
         """
@@ -468,12 +468,6 @@ class EthJsonRpc(object):
         """
         return self._call('db_getString', [database_name, key_name]).decode('hex')
 
-    def shh_version(self):
-        """
-        Returns the current whisper protocol version.
-        """
-        return self._call('shh_version')
-
     def shh_post(self, topics, payload, priority, ttl, _from=None, to=None):
         """
         Sends a whisper message.
@@ -489,6 +483,12 @@ class EthJsonRpc(object):
             'ttl': hex(ttl)
         }
         return self._call('shh_post', [whisper_object])
+
+    def shh_version(self):
+        """
+        Returns the current whisper protocol version.
+        """
+        return self._call('shh_version')
 
     def shh_newIdentity(self):
         """
