@@ -159,32 +159,6 @@ class EthJsonRpc(object):
         self.contract_address = self.eth_sendTransaction(data=byte_code, value=value, from_address=from_address, gas=gas, gas_price=gas_price)
         return self.contract_address
 
-    def eth_sendTransaction(self, to_address=None, function_name=None, data=None, value=0, from_address=None, gas=None, gas_price=None):
-        """
-        Creates new message call transaction or a contract creation, if the data field contains code.
-        """
-        # Default values for gas and gas_price
-        gas = gas or self.DEFAULT_GAS_FOR_TRANSACTIONS
-        gas_price = gas_price or self.DEFAULT_GAS_PRICE
-
-        # Default value for from_address
-        from_address = from_address or self.eth_accounts()[0]
-
-        if function_name:
-            if data is None:
-                data = []
-            data = self.translation.encode(function_name, data)
-
-        params = {
-            'from': from_address,
-            'to': to_address,
-            'gas': '0x{0:x}'.format(gas),
-            'gasPrice': '0x{0:x}'.format(gas_price),
-            'value': '0x{0:x}'.format(value) if value else None,
-            'data': '0x{0}'.format(data.encode('hex')) if data else None
-        }
-        return self._call('eth_sendTransaction', [params])
-
     def web3_clientVersion(self):
         """
         Returns the current client version.
@@ -309,6 +283,32 @@ class EthJsonRpc(object):
         """
         """
         return self._call('eth_sign', [address, data])
+
+    def eth_sendTransaction(self, to_address=None, function_name=None, data=None, value=0, from_address=None, gas=None, gas_price=None):
+        """
+        Creates new message call transaction or a contract creation, if the data field contains code.
+        """
+        # Default values for gas and gas_price
+        gas = gas or self.DEFAULT_GAS_FOR_TRANSACTIONS
+        gas_price = gas_price or self.DEFAULT_GAS_PRICE
+
+        # Default value for from_address
+        from_address = from_address or self.eth_accounts()[0]
+
+        if function_name:
+            if data is None:
+                data = []
+            data = self.translation.encode(function_name, data)
+
+        params = {
+            'from': from_address,
+            'to': to_address,
+            'gas': '0x{0:x}'.format(gas),
+            'gasPrice': '0x{0:x}'.format(gas_price),
+            'value': '0x{0:x}'.format(value) if value else None,
+            'data': '0x{0}'.format(data.encode('hex')) if data else None
+        }
+        return self._call('eth_sendTransaction', [params])
 
     def eth_call(self, to_address, function_name, data=None, code=None, default_block="latest"):
         """
