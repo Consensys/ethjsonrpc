@@ -159,6 +159,8 @@ class EthJsonRpc(object):
         self.contract_address = self.eth_sendTransaction(data=byte_code, value=value, from_address=from_address, gas=gas, gas_price=gas_price)
         return self.contract_address
 
+################################################################################
+
     def web3_clientVersion(self):
         """
         Returns the current client version.
