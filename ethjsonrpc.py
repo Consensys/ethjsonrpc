@@ -234,6 +234,11 @@ class EthJsonRpc(object):
         """
         return self._call('eth_mining')
 
+    def eth_hashrate(self):
+        """
+        """
+        return self._call('eth_hashrate')
+
     def eth_gasPrice(self):
         """
         Returns the current price per gas in wei.
@@ -300,6 +305,11 @@ class EthJsonRpc(object):
         """
         return self._call('eth_getCode', [address, default_block])
 
+    def eth_sign(self, address, data):
+        """
+        """
+        return self._call('eth_sign', [address, data])
+
     def eth_call(self, to_address, function_name, data=None, code=None, default_block="latest"):
         """
         Executes a new message call immediately without creating a transaction on the block chain.
@@ -317,6 +327,11 @@ class EthJsonRpc(object):
         if function_name:
             response = self.translation.decode(function_name, response[2:].decode('hex'))
         return response
+
+    def eth_estimateGas(self):
+        """
+        """
+        return self._call('eth_estimateGas')
 
     def eth_getBlockByHash(self, block_hash, transaction_objects=True):
         """
@@ -352,6 +367,11 @@ class EthJsonRpc(object):
         Returns information about a transaction by block number and transaction index position.
         """
         return self._call('eth_getTransactionByBlock_numberAndIndex', [block_number, hex(index)])
+
+    def eth_getTransactionReceipt(self, tx_hash):
+        """
+        """
+        return self._call('eth_getTransactionReceipt', [tx_hash])
 
     def eth_getUncleByBlockHashAndIndex(self, block_hash, index, transaction_objects=True):
         """
@@ -408,6 +428,11 @@ class EthJsonRpc(object):
         """
         return self._call('eth_newBlockFilter', [default_block])
 
+    def eth_newPendingTransactionFilter(self):
+        """
+        """
+        return self._call('eth_newPendingTransactionFilter')
+
     def eth_uninstallFilter(self, filter_id):
         """
         Uninstalls a filter with given id. Should always be called when watch is no longer needed. Additionally Filters timeout when they aren't requested with eth_getFilterChanges for a period of time.
@@ -443,6 +468,11 @@ class EthJsonRpc(object):
         Used for submitting a proof-of-work solution.
         """
         return self._call('eth_submitWork', [nonce, header, mix_digest])
+
+    def eth_submitHashrate(self, hash_rate, client_id):
+        """
+        """
+        return self._call('eth_submitHashrate', [hash_rate, client_id])
 
     def db_putString(self, database_name, key_name, string):
         """
