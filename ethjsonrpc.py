@@ -300,17 +300,17 @@ class EthJsonRpc(object):
         """
         return self._call('eth_getBlockTransactionCountByNumber', [hex(block_number)])
 
-    def eth_getUncleCountByblockHash(self, block_hash):
+    def eth_getUncleCountByBlockHash(self, block_hash):
         """
         Returns the number of uncles in a block from a block matching the given block hash.
         """
-        return self._call('eth_getUncleCountByblockHash', [block_hash])
+        return self._call('eth_getUncleCountByBlockHash', [block_hash])
 
-    def eth_getUncleCountByblockNumber(self, block_number):
+    def eth_getUncleCountByBlockNumber(self, block_number):
         """
         Returns the number of uncles in a block from a block matching the given block number.
         """
-        return self._call('eth_getUncleCountByblockNumber', [hex(block_number)])
+        return self._call('eth_getUncleCountByBlockNumber', [hex(block_number)])
 
     def eth_getCode(self, address, default_block="latest"):
         """
@@ -341,29 +341,29 @@ class EthJsonRpc(object):
         """
         return self._call('eth_getTransactionByHash', [transaction_hash])
 
-    def eth_getTransactionByblockHashAndIndex(self, block_hash, index):
+    def eth_getTransactionByBlockHashAndIndex(self, block_hash, index):
         """
         Returns information about a transaction by block hash and transaction index position.
         """
-        return self._call('eth_getTransactionByblock_hashAndIndex', [block_hash, hex(index)])
+        return self._call('eth_getTransactionByBlock_hashAndIndex', [block_hash, hex(index)])
 
-    def eth_getTransactionByblockNumberAndIndex(self, block_number, index):
+    def eth_getTransactionByBlockNumberAndIndex(self, block_number, index):
         """
         Returns information about a transaction by block number and transaction index position.
         """
-        return self._call('eth_getTransactionByblock_numberAndIndex', [block_number, hex(index)])
+        return self._call('eth_getTransactionByBlock_numberAndIndex', [block_number, hex(index)])
 
-    def eth_getUncleByblockHashAndIndex(self, block_hash, index, transaction_objects=True):
+    def eth_getUncleByBlockHashAndIndex(self, block_hash, index, transaction_objects=True):
         """
         Returns information about a uncle of a block by hash and uncle index position.
         """
-        return self._call('eth_getUncleByblock_hashAndIndex', [block_hash, hex(index), transaction_objects])
+        return self._call('eth_getUncleByBlock_hashAndIndex', [block_hash, hex(index), transaction_objects])
 
-    def eth_getUncleByblockNumberAndIndex(self, block_number, index, transaction_objects=True):
+    def eth_getUncleByBlockNumberAndIndex(self, block_number, index, transaction_objects=True):
         """
         Returns information about a uncle of a block by number and uncle index position.
         """
-        return self._call('eth_getUncleByblock_numberAndIndex', [block_number, hex(index), transaction_objects])
+        return self._call('eth_getUncleByBlock_numberAndIndex', [block_number, hex(index), transaction_objects])
 
     def eth_getCompilers(self):
         """
