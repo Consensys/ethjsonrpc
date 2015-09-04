@@ -216,11 +216,11 @@ class EthJsonRpc(object):
         """
         return self._call('net_listening')
 
-    def eth_version(self):
+    def eth_protocolVersion(self):
         """
         Returns the current ethereum protocol version.
         """
-        return self._call('eth_version')
+        return self._call('eth_protocolVersion')
 
     def eth_coinbase(self):
         """
