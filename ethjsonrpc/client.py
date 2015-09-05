@@ -16,14 +16,6 @@ class EthJsonRpc(object):
     DEFAULT_GAS_PRICE = 10*10**12 #10 szabo
 
     def __init__(self, host='localhost', port=GETH_DEFAULT_RPC_PORT, contract_code=None, contract_address=None):
-
-        # If we don't raise the exceptions below, it's kind of hard to identify
-        # the problem when any of these variables are null.
-        if host is None:
-            raise RuntimeError('RPC hostname cannot be null')
-        if port is None:
-            raise RuntimeError('RPC port cannot be null')
-
         self.host = host
         self.port = port
         self.contract_code = None
