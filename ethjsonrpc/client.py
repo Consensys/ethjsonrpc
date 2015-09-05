@@ -74,7 +74,7 @@ class EthJsonRpc(object):
         prefix = utils.big_endian_to_int(utils.sha3(signature)[:4])
 
         if signature.find('(') == -1:
-            raise RuntimeError('Invalid function signature. Missing '(' and/or ')'...')
+            raise RuntimeError('Invalid function signature. Missing "(" and/or ")"...')
 
         if signature.find(')') - signature.find('(') == 1:
             return utils.encode_int(prefix)
