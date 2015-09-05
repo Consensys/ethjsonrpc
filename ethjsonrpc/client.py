@@ -5,13 +5,17 @@ import json
 from ethereum import utils
 from ethereum.abi import ContractTranslator, encode_abi, decode_abi
 
+GETH_DEFAULT_RPC_PORT     = 8545
+ETH_DEFAULT_RPC_PORT      = 8080
+PYETHAPP_DEFAULT_RPC_PORT = 4000
+
 
 class EthJsonRpc(object):
 
     DEFAULT_GAS_FOR_TRANSACTIONS = 500000
     DEFAULT_GAS_PRICE = 10*10**12 #10 szabo
 
-    def __init__(self, host, port, contract_code=None, contract_address=None):
+    def __init__(self, host='localhost', port=GETH_DEFAULT_RPC_PORT, contract_code=None, contract_address=None):
 
         # If we don't raise the exceptions below, it's kind of hard to identify
         # the problem when any of these variables are null.
