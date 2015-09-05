@@ -55,7 +55,7 @@ class EthJsonRpc(object):
             'params': params,
             'id': _id
         })
-        response = requests.post('http://{0}:{1}'.format(self.host, self.port), data=data).json()
+        response = requests.post('http://{}:{}'.format(self.host, self.port), data=data).json()
         if 'result' in response:
             return response['result']
         else:
@@ -138,12 +138,12 @@ class EthJsonRpc(object):
         data = self._encode_function(function_signature, function_parameters)
 
         params = {
-            'from': from_address,
-            'to': to_address,
-            'gas': '0x{0:x}'.format(gas),
+            'from':     from_address,
+            'to':       to_address,
+            'gas':      '0x{0:x}'.format(gas),
             'gasPrice': '0x{0:x}'.format(gas_price),
-            'value': None,
-            'data': '0x{0}'.format(data.encode('hex')) if data else None
+            'value':    None,
+            'data':     '0x{0}'.format(data.encode('hex')) if data else None
         }
         response = self._call('eth_sendTransaction', [params])
         return response
@@ -299,12 +299,12 @@ class EthJsonRpc(object):
             data = self.translation.encode(function_name, data)
 
         params = {
-            'from': from_address,
-            'to': to_address,
-            'gas': '0x{0:x}'.format(gas),
+            'from':     from_address,
+            'to':       to_address,
+            'gas':      '0x{0:x}'.format(gas),
             'gasPrice': '0x{0:x}'.format(gas_price),
-            'value': '0x{0:x}'.format(value) if value else None,
-            'data': '0x{0}'.format(data.encode('hex')) if data else None
+            'value':    '0x{0:x}'.format(value) if value else None,
+            'data':     '0x{0}'.format(data.encode('hex')) if data else None
         }
         return self._call('eth_sendTransaction', [params])
 
@@ -409,9 +409,9 @@ class EthJsonRpc(object):
         '''
         _filter = {
             'fromBlock': from_block,
-            'toBlock': to_block,
-            'address': address,
-            'topics': topics
+            'toBlock':   to_block,
+            'address':   address,
+            'topics':    topics,
         }
         return self._call('eth_newFilter', [_filter])
 
@@ -498,12 +498,12 @@ class EthJsonRpc(object):
         priority is integer
         '''
         whisper_object = {
-            'from': _from,
-            'to': to,
-            'topics': topics,
-            'payload': payload,
+            'from':     _from,
+            'to':       to,
+            'topics':   topics,
+            'payload':  payload,
             'priority': hex(priority),
-            'ttl': hex(ttl)
+            'ttl':      hex(ttl)
         }
         return self._call('shh_post', [whisper_object])
 
@@ -540,8 +540,8 @@ class EthJsonRpc(object):
         Creates filter to notify, when client receives whisper message matching the filter options.
         '''
         _filter = {
-            'to': to,
-            'topics': topics
+            'to':     to,
+            'topics': topics,
         }
         return self._call('shh_newFilter', [_filter])
 
