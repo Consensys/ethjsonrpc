@@ -15,9 +15,11 @@ class EthJsonRpc(object):
     DEFAULT_GAS_FOR_TRANSACTIONS = 500000
     DEFAULT_GAS_PRICE = 10*10**12 #10 szabo
 
-    def __init__(self, host='localhost', port=GETH_DEFAULT_RPC_PORT, contract_code=None, contract_address=None):
+    def __init__(self, host='localhost', port=GETH_DEFAULT_RPC_PORT, tls=False,
+                 contract_code=None, contract_address=None):
         self.host = host
         self.port = port
+        self.tls = tls
         self.contract_code = None
         self.signature = None
         self.translation = None
@@ -55,7 +57,11 @@ class EthJsonRpc(object):
             'params': params,
             'id': _id
         })
-        response = requests.post('http://{}:{}'.format(self.host, self.port), data=data).json()
+        scheme = 'http'
+        if self.tls:
+            scheme += 's'
+        url = '{}://{}:{}'.format(scheme, self.host, self.port)
+        response = requests.post(url, data=data).json()
         if 'result' in response:
             return response['result']
         else:
