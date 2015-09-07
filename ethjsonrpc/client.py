@@ -236,10 +236,11 @@ class EthJsonRpc(object):
         '''
         return self._call('eth_blockNumber')
 
-    def eth_getBalance(self, address, default_block='latest'):
+    def eth_getBalance(self, address=None, default_block='latest'):
         '''
         Returns the balance of the account of given address.
         '''
+        address = address or self.eth_coinbase()
         return self._call('eth_getBalance', [address, default_block])
 
     def eth_getStorageAt(self, address, position, default_block='latest'):
