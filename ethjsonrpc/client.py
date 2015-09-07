@@ -1,4 +1,5 @@
 import json
+import warnings
 
 import serpent
 import requests
@@ -477,24 +478,28 @@ class EthJsonRpc(object):
         '''
         Stores a string in the local database.
         '''
+        warnings.warn('deprecated', DeprecationWarning)
         return self._call('db_putString', [database_name, key_name, string])
 
     def db_getString(self, database_name, key_name):
         '''
         Stores a string in the local database.
         '''
+        warnings.warn('deprecated', DeprecationWarning)
         return self._call('db_getString', [database_name, key_name])
 
     def db_putHex(self, database_name, key_name, string):
         '''
         Stores binary data in the local database.
         '''
+        warnings.warn('deprecated', DeprecationWarning)
         return self._call('db_putHex', [database_name, key_name, string.encode('hex')])
 
     def db_getHex(self, database_name, key_name):
         '''
         Returns binary data from the local database.
         '''
+        warnings.warn('deprecated', DeprecationWarning)
         return self._call('db_getString', [database_name, key_name]).decode('hex')
 
     def shh_post(self, topics, payload, priority, ttl, _from=None, to=None):
