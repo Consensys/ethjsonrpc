@@ -1,0 +1,3 @@
+ethereum==1.0.0
+ethereum-serpent==2.0.0
+requests==2.7.0
