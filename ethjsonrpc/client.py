@@ -10,6 +10,15 @@ GETH_DEFAULT_RPC_PORT     = 8545
 ETH_DEFAULT_RPC_PORT      = 8080
 PYETHAPP_DEFAULT_RPC_PORT = 4000
 
+BLOCK_TAG_EARLIEST = 'earliest'
+BLOCK_TAG_LATEST   = 'latest'
+BLOCK_TAG_PENDING  = 'pending'
+BLOCK_TAGS = (
+    BLOCK_TAG_EARLIEST,
+    BLOCK_TAG_LATEST,
+    BLOCK_TAG_PENDING,
+)
+
 
 class EthJsonRpc(object):
 
@@ -104,7 +113,7 @@ class EthJsonRpc(object):
         '''
         return self._install_contract('lll', contract_code, value, from_address, gas, gas_price)
 
-    def contract_instant_call(self, to_address, function_signature, function_parameters=None, result_types=None, default_block='latest'):
+    def contract_instant_call(self, to_address, function_signature, function_parameters=None, result_types=None, default_block=BLOCK_TAG_LATEST):
         '''
         This method makes a instant call on a contract function without the need to have the contract source code.
         Examples of function_signature in solidity:
@@ -125,7 +134,7 @@ class EthJsonRpc(object):
         response = self._call('eth_call', params)
         return decode_abi(result_types, response[2:].decode('hex'))
 
-    def contract_transaction_call(self, to_address, function_signature, function_parameters=None, from_address=None, gas=None, gas_price=None, default_block='latest'):
+    def contract_transaction_call(self, to_address, function_signature, function_parameters=None, from_address=None, gas=None, gas_price=None, default_block=BLOCK_TAG_LATEST):
         '''
         This method makes a call on a contract function through a transaction. Returns the transaction_id.
         Examples of function_signature in solidity:
@@ -236,23 +245,32 @@ class EthJsonRpc(object):
         '''
         return self._call('eth_blockNumber')
 
-    def eth_getBalance(self, address=None, default_block='latest'):
+    def eth_getBalance(self, address=None, default_block=BLOCK_TAG_LATEST):
         '''
         Returns the balance of the account of given address.
         '''
+        if isinstance(default_block, basestring):
+            if default_block not in BLOCK_TAGS:
+                raise ValueError
         address = address or self.eth_coinbase()
         return self._call('eth_getBalance', [address, default_block])
 
-    def eth_getStorageAt(self, address, position, default_block='latest'):
+    def eth_getStorageAt(self, address, position, default_block=BLOCK_TAG_LATEST):
         '''
         Returns the value from a storage position at a given address.
         '''
+        if isinstance(default_block, basestring):
+            if default_block not in BLOCK_TAGS:
+                raise ValueError
         return self._call('eth_getStorageAt', [address, hex(position), default_block])
 
-    def eth_getTransactionCount(self, address, default_block='latest'):
+    def eth_getTransactionCount(self, address, default_block=BLOCK_TAG_LATEST):
         '''
         Returns the number of transactions send from a address.
         '''
+        if isinstance(default_block, basestring):
+            if default_block not in BLOCK_TAGS:
+                raise ValueError
         return self._call('eth_getTransactionCount', [address, default_block])
 
     def eth_getBlockTransactionCountByHash(self, block_hash):
@@ -279,10 +297,13 @@ class EthJsonRpc(object):
         '''
         return self._call('eth_getUncleCountByBlockNumber', [hex(block_number)])
 
-    def eth_getCode(self, address, default_block='latest'):
+    def eth_getCode(self, address, default_block=BLOCK_TAG_LATEST):
         '''
         Returns code at a given address.
         '''
+        if isinstance(default_block, basestring):
+            if default_block not in BLOCK_TAGS:
+                raise ValueError
         return self._call('eth_getCode', [address, default_block])
 
     def eth_sign(self, address, data):
@@ -316,10 +337,13 @@ class EthJsonRpc(object):
         }
         return self._call('eth_sendTransaction', [params])
 
-    def eth_call(self, to_address, function_name, data=None, code=None, default_block='latest'):
+    def eth_call(self, to_address, function_name, data=None, code=None, default_block=BLOCK_TAG_LATEST):
         '''
         Executes a new message call immediately without creating a transaction on the block chain.
         '''
+        if isinstance(default_block, basestring):
+            if default_block not in BLOCK_TAGS:
+                raise ValueError
         data = data or []
         data = self.translation.encode(function_name, data)
         params = [
@@ -410,7 +434,7 @@ class EthJsonRpc(object):
         '''
         return self._call('eth_compileSerpent', [code])
 
-    def eth_newFilter(self, from_block='latest', to_block='latest', address=None, topics=None):
+    def eth_newFilter(self, from_block=BLOCK_TAG_LATEST, to_block=BLOCK_TAG_LATEST, address=None, topics=None):
         '''
         Creates a filter object, based on filter options, to notify when the state changes (logs).
         To check if the state has changed, call eth_getFilterChanges.
@@ -423,7 +447,7 @@ class EthJsonRpc(object):
         }
         return self._call('eth_newFilter', [_filter])
 
-    def eth_newBlockFilter(self, default_block='latest'):
+    def eth_newBlockFilter(self, default_block=BLOCK_TAG_LATEST):
         '''
         Creates a filter object, based on an option string, to notify when state changes (logs). To check if the state has changed, call eth_getFilterChanges.
         '''
