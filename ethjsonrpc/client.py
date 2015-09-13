@@ -175,79 +175,80 @@ class EthJsonRpc(object):
 
     def web3_clientVersion(self):
         '''
-        Returns the current client version.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#web3_clientversion
         '''
         return self._call('web3_clientVersion')
 
     def web3_sha3(self, data):
         '''
-        Returns SHA3 of the given data.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#web3_sha3
         '''
         data = str(data).encode('hex')
         return self._call('web3_sha3', [data])
 
     def net_version(self):
         '''
-        Returns the current network protocol version.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#net_version
         '''
         return self._call('net_version')
 
     def net_peerCount(self):
         '''
-        Returns number of peers currently connected to the client.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#net_peercount
         '''
         return self._call('net_peerCount')
 
     def net_listening(self):
         '''
-        Returns true if client is actively listening for network connections.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#net_listening
         '''
         return self._call('net_listening')
 
     def eth_protocolVersion(self):
         '''
-        Returns the current ethereum protocol version.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_protocolversion
         '''
         return self._call('eth_protocolVersion')
 
     def eth_coinbase(self):
         '''
-        Returns the client coinbase address.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_coinbase
         '''
         return self._call('eth_coinbase')
 
     def eth_mining(self):
         '''
-        Returns true if client is actively mining new blocks.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_mining
         '''
         return self._call('eth_mining')
 
     def eth_hashrate(self):
         '''
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_hashrate
         '''
         return self._call('eth_hashrate')
 
     def eth_gasPrice(self):
         '''
-        Returns the current price per gas in wei.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_gasprice
         '''
         return self._call('eth_gasPrice')
 
     def eth_accounts(self):
         '''
-        Returns a list of addresses owned by client.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_accounts
         '''
         return self._call('eth_accounts')
 
     def eth_blockNumber(self):
         '''
-        Returns the number of most recent block.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_blocknumber
         '''
         return self._call('eth_blockNumber')
 
     def eth_getBalance(self, address=None, default_block=BLOCK_TAG_LATEST):
         '''
-        Returns the balance of the account of given address.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getbalance
         '''
         if isinstance(default_block, basestring):
             if default_block not in BLOCK_TAGS:
@@ -257,7 +258,7 @@ class EthJsonRpc(object):
 
     def eth_getStorageAt(self, address, position, default_block=BLOCK_TAG_LATEST):
         '''
-        Returns the value from a storage position at a given address.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getstorageat
         '''
         if isinstance(default_block, basestring):
             if default_block not in BLOCK_TAGS:
@@ -266,7 +267,7 @@ class EthJsonRpc(object):
 
     def eth_getTransactionCount(self, address, default_block=BLOCK_TAG_LATEST):
         '''
-        Returns the number of transactions send from a address.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_gettransactioncount
         '''
         if isinstance(default_block, basestring):
             if default_block not in BLOCK_TAGS:
@@ -275,31 +276,31 @@ class EthJsonRpc(object):
 
     def eth_getBlockTransactionCountByHash(self, block_hash):
         '''
-        Returns the number of transactions in a block from a block matching the given block hash.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getblocktransactioncountbyhash
         '''
         return self._call('eth_getBlockTransactionCountByHash', [block_hash])
 
     def eth_getBlockTransactionCountByNumber(self, block_number):
         '''
-        Returns the number of transactions in a block from a block matching the given block number.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getblocktransactioncountbynumber
         '''
         return self._call('eth_getBlockTransactionCountByNumber', [hex(block_number)])
 
     def eth_getUncleCountByBlockHash(self, block_hash):
         '''
-        Returns the number of uncles in a block from a block matching the given block hash.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getunclecountbyblockhash
         '''
         return self._call('eth_getUncleCountByBlockHash', [block_hash])
 
     def eth_getUncleCountByBlockNumber(self, block_number):
         '''
-        Returns the number of uncles in a block from a block matching the given block number.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getblocktransactioncountbynumber
         '''
         return self._call('eth_getUncleCountByBlockNumber', [hex(block_number)])
 
     def eth_getCode(self, address, default_block=BLOCK_TAG_LATEST):
         '''
-        Returns code at a given address.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getcode
         '''
         if isinstance(default_block, basestring):
             if default_block not in BLOCK_TAGS:
@@ -308,12 +309,13 @@ class EthJsonRpc(object):
 
     def eth_sign(self, address, data):
         '''
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_sign
         '''
         return self._call('eth_sign', [address, data])
 
     def eth_sendTransaction(self, to_address=None, function_name=None, data=None, value=0, from_address=None, gas=None, gas_price=None):
         '''
-        Creates new message call transaction or a contract creation, if the data field contains code.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_sendtransaction
         '''
         # Default values for gas and gas_price
         gas = gas or self.DEFAULT_GAS_FOR_TRANSACTIONS
@@ -339,7 +341,7 @@ class EthJsonRpc(object):
 
     def eth_call(self, to_address, function_name, data=None, code=None, default_block=BLOCK_TAG_LATEST):
         '''
-        Executes a new message call immediately without creating a transaction on the block chain.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_call
         '''
         if isinstance(default_block, basestring):
             if default_block not in BLOCK_TAGS:
@@ -360,84 +362,85 @@ class EthJsonRpc(object):
 
     def eth_estimateGas(self):
         '''
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_estimategas
         '''
         return self._call('eth_estimateGas')
 
     def eth_getBlockByHash(self, block_hash, transaction_objects=True):
         '''
-        Returns information about a block by hash.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getblockbyhash
         '''
         return self._call('eth_getBlockByHash', [block_hash, transaction_objects])
 
     def eth_getBlockByNumber(self, block_number, transaction_objects=True):
         '''
-        Returns information about a block by hash.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getblockbynumber
         '''
         return self._call('eth_getBlockByNumber', [block_number, transaction_objects])
 
     def eth_getTransactionByHash(self, transaction_hash):
         '''
-        Returns the information about a transaction requested by transaction hash.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_gettransactionbyhash
         '''
         return self._call('eth_getTransactionByHash', [transaction_hash])
 
     def eth_getTransactionByBlockHashAndIndex(self, block_hash, index):
         '''
-        Returns information about a transaction by block hash and transaction index position.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_gettransactionbyblockhashandindex
         '''
         return self._call('eth_getTransactionByBlockHashAndIndex', [block_hash, hex(index)])
 
     def eth_getTransactionByBlockNumberAndIndex(self, block_number, index):
         '''
-        Returns information about a transaction by block number and transaction index position.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_gettransactionbyblocknumberandindex
         '''
         return self._call('eth_getTransactionByBlockNumberAndIndex', [block_number, hex(index)])
 
     def eth_getTransactionReceipt(self, tx_hash):
         '''
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_gettransactionreceipt
         '''
         return self._call('eth_getTransactionReceipt', [tx_hash])
 
     def eth_getUncleByBlockHashAndIndex(self, block_hash, index, transaction_objects=True):
         '''
-        Returns information about a uncle of a block by hash and uncle index position.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getunclebyblockhashandindex
         '''
         return self._call('eth_getUncleByBlockHashAndIndex', [block_hash, hex(index), transaction_objects])
 
     def eth_getUncleByBlockNumberAndIndex(self, block_number, index, transaction_objects=True):
         '''
-        Returns information about a uncle of a block by number and uncle index position.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getunclebyblocknumberandindex
         '''
         return self._call('eth_getUncleByBlockNumberAndIndex', [block_number, hex(index), transaction_objects])
 
     def eth_getCompilers(self):
         '''
-        Returns a list of available compilers in the client.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getcompilers
         '''
         return self._call('eth_getCompilers')
 
     def eth_compileLLL(self, code):
         '''
-        Returns compiled LLL code.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_compilelll
         '''
         return self._call('eth_compileLLL', [code])
 
     def eth_compileSolidity(self, code):
         '''
-        Returns compiled solidity code.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_compilesolidity
         '''
         return self._call('eth_compileSolidity', [code])
 
     def eth_compileSerpent(self, code):
         '''
-        Returns compiled serpent code.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_compileserpent
         '''
         return self._call('eth_compileSerpent', [code])
 
     def eth_newFilter(self, from_block=BLOCK_TAG_LATEST, to_block=BLOCK_TAG_LATEST, address=None, topics=None):
         '''
-        Creates a filter object, based on filter options, to notify when the state changes (logs).
-        To check if the state has changed, call eth_getFilterChanges.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_newfilter
         '''
         _filter = {
             'fromBlock': from_block,
@@ -449,89 +452,89 @@ class EthJsonRpc(object):
 
     def eth_newBlockFilter(self, default_block=BLOCK_TAG_LATEST):
         '''
-        Creates a filter object, based on an option string, to notify when state changes (logs). To check if the state has changed, call eth_getFilterChanges.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_newblockfilter
         '''
         return self._call('eth_newBlockFilter', [default_block])
 
     def eth_newPendingTransactionFilter(self):
         '''
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_newpendingtransactionfilter
         '''
         return self._call('eth_newPendingTransactionFilter')
 
     def eth_uninstallFilter(self, filter_id):
         '''
-        Uninstalls a filter with given id. Should always be called when watch is no longer needed. Additionally Filters timeout when they aren't requested with eth_getFilterChanges for a period of time.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_uninstallfilter
         '''
         return self._call('eth_uninstallFilter', [filter_id])
 
     def eth_getFilterChanges(self, filter_id):
         '''
-        Polling method for a filter, which returns an array of logs which occurred since last poll.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getfilterchanges
         '''
         return self._call('eth_getFilterChanges', [filter_id])
 
     def eth_getFilterLogs(self, filter_id):
         '''
-        Returns an array of all logs matching filter with given id.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getfilterlogs
         '''
         return self._call('eth_getFilterLogs', [filter_id])
 
     def eth_getLogs(self, filter_object):
         '''
-        Returns an array of all logs matching a given filter object.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getlogs
         '''
         return self._call('eth_getLogs', [filter_object])
 
     def eth_getWork(self):
         '''
-        Returns the hash of the current block, the seedHash, and the difficulty to be met.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getwork
         '''
         return self._call('eth_getWork')
 
     def eth_submitWork(self, nonce, header, mix_digest):
         '''
-        Used for submitting a proof-of-work solution.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_submitwork
         '''
         return self._call('eth_submitWork', [nonce, header, mix_digest])
 
     def eth_submitHashrate(self, hash_rate, client_id):
         '''
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_submithashrate
         '''
         return self._call('eth_submitHashrate', [hash_rate, client_id])
 
     def db_putString(self, database_name, key_name, string):
         '''
-        Stores a string in the local database.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#db_putstring
         '''
         warnings.warn('deprecated', DeprecationWarning)
         return self._call('db_putString', [database_name, key_name, string])
 
     def db_getString(self, database_name, key_name):
         '''
-        Stores a string in the local database.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#db_getstring
         '''
         warnings.warn('deprecated', DeprecationWarning)
         return self._call('db_getString', [database_name, key_name])
 
     def db_putHex(self, database_name, key_name, string):
         '''
-        Stores binary data in the local database.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#db_puthex
         '''
         warnings.warn('deprecated', DeprecationWarning)
         return self._call('db_putHex', [database_name, key_name, string.encode('hex')])
 
     def db_getHex(self, database_name, key_name):
         '''
-        Returns binary data from the local database.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#db_gethex
         '''
         warnings.warn('deprecated', DeprecationWarning)
         return self._call('db_getString', [database_name, key_name]).decode('hex')
 
     def shh_post(self, topics, payload, priority, ttl, _from=None, to=None):
         '''
-        Sends a whisper message.
-        ttl is time-to-live in seconds (integer)
-        priority is integer
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#shh_post
         '''
         whisper_object = {
             'from':     _from,
@@ -545,35 +548,37 @@ class EthJsonRpc(object):
 
     def shh_version(self):
         '''
-        Returns the current whisper protocol version.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#shh_version
         '''
         return self._call('shh_version')
 
     def shh_newIdentity(self):
         '''
-        Creates new whisper identity in the client.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#shh_newidentity
         '''
         return self._call('shh_newIdentity')
 
     def shh_hasIdentity(self, address):
         '''
-        Checks if the client hold the private keys for a given identity.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#shh_hasidentity
         '''
         return self._call('shh_hasIdentity', [address])
 
     def shh_newGroup(self):
         '''
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#shh_newgroup
         '''
         return self._call('shh_newGroup')
 
     def shh_addToGroup(self):
         '''
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#shh_addtogroup
         '''
         return self._call('shh_addToGroup')
 
     def shh_newFilter(self, to, topics):
         '''
-        Creates filter to notify, when client receives whisper message matching the filter options.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#shh_newfilter
         '''
         _filter = {
             'to':     to,
@@ -583,19 +588,18 @@ class EthJsonRpc(object):
 
     def shh_uninstallFilter(self, filter_id):
         '''
-        Uninstalls a filter with given id. Should always be called when watch is no longer needed.
-        Additionally Filters timeout when they aren't requested with shh_getFilterChanges for a period of time.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#shh_uninstallfilter
         '''
         return self._call('shh_uninstallFilter', [filter_id])
 
     def shh_getFilterChanges(self, filter_id):
         '''
-        Polling method for whisper filters.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#shh_getfilterchanges
         '''
         return self._call('shh_getFilterChanges', [filter_id])
 
     def shh_getMessages(self, filter_id):
         '''
-        Get all messages matching a filter, which are still existing in the node.
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#shh_getmessages
         '''
         return self._call('shh_getMessages', [filter_id])
