@@ -277,7 +277,7 @@ class EthJsonRpc(object):
         '''
         Returns the number of transactions in a block from a block matching the given block hash.
         '''
-        return self._call('eth_getTransactionCount', [block_hash])
+        return self._call('eth_getBlockTransactionCountByHash', [block_hash])
 
     def eth_getBlockTransactionCountByNumber(self, block_number):
         '''
@@ -385,13 +385,13 @@ class EthJsonRpc(object):
         '''
         Returns information about a transaction by block hash and transaction index position.
         '''
-        return self._call('eth_getTransactionByBlock_hashAndIndex', [block_hash, hex(index)])
+        return self._call('eth_getTransactionByBlockHashAndIndex', [block_hash, hex(index)])
 
     def eth_getTransactionByBlockNumberAndIndex(self, block_number, index):
         '''
         Returns information about a transaction by block number and transaction index position.
         '''
-        return self._call('eth_getTransactionByBlock_numberAndIndex', [block_number, hex(index)])
+        return self._call('eth_getTransactionByBlockNumberAndIndex', [block_number, hex(index)])
 
     def eth_getTransactionReceipt(self, tx_hash):
         '''
@@ -402,13 +402,13 @@ class EthJsonRpc(object):
         '''
         Returns information about a uncle of a block by hash and uncle index position.
         '''
-        return self._call('eth_getUncleByBlock_hashAndIndex', [block_hash, hex(index), transaction_objects])
+        return self._call('eth_getUncleByBlockHashAndIndex', [block_hash, hex(index), transaction_objects])
 
     def eth_getUncleByBlockNumberAndIndex(self, block_number, index, transaction_objects=True):
         '''
         Returns information about a uncle of a block by number and uncle index position.
         '''
-        return self._call('eth_getUncleByBlock_numberAndIndex', [block_number, hex(index), transaction_objects])
+        return self._call('eth_getUncleByBlockNumberAndIndex', [block_number, hex(index), transaction_objects])
 
     def eth_getCompilers(self):
         '''
@@ -564,7 +564,7 @@ class EthJsonRpc(object):
     def shh_newGroup(self):
         '''
         '''
-        return self._call('shh_hasIdentity')
+        return self._call('shh_newGroup')
 
     def shh_addToGroup(self):
         '''
