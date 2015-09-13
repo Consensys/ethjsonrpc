@@ -294,7 +294,7 @@ class EthJsonRpc(object):
 
     def eth_getUncleCountByBlockNumber(self, block_number):
         '''
-        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getblocktransactioncountbynumber
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getunclecountbyblocknumber
         '''
         return self._call('eth_getUncleCountByBlockNumber', [hex(block_number)])
 
@@ -530,7 +530,7 @@ class EthJsonRpc(object):
         https://github.com/ethereum/wiki/wiki/JSON-RPC#db_gethex
         '''
         warnings.warn('deprecated', DeprecationWarning)
-        return self._call('db_getString', [database_name, key_name]).decode('hex')
+        return self._call('db_getHex', [database_name, key_name]).decode('hex')
 
     def shh_post(self, topics, payload, priority, ttl, _from=None, to=None):
         '''
