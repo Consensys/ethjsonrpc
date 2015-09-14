@@ -11,7 +11,7 @@ Python client for Ethereum using the JSON-RPC interface
 $ pip install ethjsonrpc
 ```
 
-### Example
+## Example
 
 ```python
 >>> from ethjsonrpc import EthJsonRpc
@@ -26,6 +26,6 @@ u'Geth/v1.1.3/linux/go1.5'
 230891
 ```
 
-### See also
+## See also
 
 * https://github.com/ethereum/wiki/wiki/JSON-RPC
