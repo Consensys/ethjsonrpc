@@ -6,6 +6,8 @@ import requests
 from ethereum import utils
 from ethereum.abi import ContractTranslator, encode_abi, decode_abi
 
+from .utils import hex_to_int
+
 GETH_DEFAULT_RPC_PORT     = 8545
 ETH_DEFAULT_RPC_PORT      = 8080
 PYETHAPP_DEFAULT_RPC_PORT = 4000
@@ -196,7 +198,7 @@ class EthJsonRpc(object):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#net_peercount
         '''
-        return self._call('net_peerCount')
+        return hex_to_int(self._call('net_peerCount'))
 
     def net_listening(self):
         '''
@@ -226,13 +228,13 @@ class EthJsonRpc(object):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_hashrate
         '''
-        return self._call('eth_hashrate')
+        return hex_to_int(self._call('eth_hashrate'))
 
     def eth_gasPrice(self):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_gasprice
         '''
-        return self._call('eth_gasPrice')
+        return hex_to_int(self._call('eth_gasPrice'))
 
     def eth_accounts(self):
         '''
@@ -244,7 +246,7 @@ class EthJsonRpc(object):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_blocknumber
         '''
-        return self._call('eth_blockNumber')
+        return hex_to_int(self._call('eth_blockNumber'))
 
     def eth_getBalance(self, address=None, default_block=BLOCK_TAG_LATEST):
         '''
@@ -460,7 +462,7 @@ class EthJsonRpc(object):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_newpendingtransactionfilter
         '''
-        return self._call('eth_newPendingTransactionFilter')
+        return hex_to_int(self._call('eth_newPendingTransactionFilter'))
 
     def eth_uninstallFilter(self, filter_id):
         '''
