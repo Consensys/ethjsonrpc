@@ -289,38 +289,60 @@ class EthJsonRpc(object):
                 raise ValueError
         return self._call('eth_getStorageAt', [address, hex(position), default_block])
 
-    def eth_getTransactionCount(self, address, default_block=BLOCK_TAG_LATEST):
+    def eth_getTransactionCount(self, address, block=BLOCK_TAG_LATEST):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_gettransactioncount
+
+        TESTED
         '''
-        if isinstance(default_block, basestring):
-            if default_block not in BLOCK_TAGS:
-                raise ValueError
-        return self._call('eth_getTransactionCount', [address, default_block])
+        if isinstance(block, basestring):
+            if block not in BLOCK_TAGS:
+                raise ValueError('invalid block tag')
+        if isinstance(block, int):
+            block = hex(block)
+        return hex_to_int(self._call('eth_getTransactionCount', [address, block]))
 
     def eth_getBlockTransactionCountByHash(self, block_hash):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getblocktransactioncountbyhash
-        '''
-        return self._call('eth_getBlockTransactionCountByHash', [block_hash])
 
-    def eth_getBlockTransactionCountByNumber(self, block_number):
+        TESTED
+        '''
+        return hex_to_int(self._call('eth_getBlockTransactionCountByHash', [block_hash]))
+
+    def eth_getBlockTransactionCountByNumber(self, block=BLOCK_TAG_LATEST):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getblocktransactioncountbynumber
+
+        TESTED
         '''
-        return self._call('eth_getBlockTransactionCountByNumber', [hex(block_number)])
+        if isinstance(block, basestring):
+            if block not in BLOCK_TAGS:
+                raise ValueError('invalid block tag')
+        if isinstance(block, int):
+            block = hex(block)
+        return hex_to_int(self._call('eth_getBlockTransactionCountByNumber', [block]))
 
     def eth_getUncleCountByBlockHash(self, block_hash):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getunclecountbyblockhash
-        '''
-        return self._call('eth_getUncleCountByBlockHash', [block_hash])
 
-    def eth_getUncleCountByBlockNumber(self, block_number):
+        TESTED
+        '''
+        return hex_to_int(self._call('eth_getUncleCountByBlockHash', [block_hash]))
+
+    def eth_getUncleCountByBlockNumber(self, block=BLOCK_TAG_LATEST):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getunclecountbyblocknumber
+
+        TESTED
         '''
-        return self._call('eth_getUncleCountByBlockNumber', [hex(block_number)])
+        if isinstance(block, basestring):
+            if block not in BLOCK_TAGS:
+                raise ValueError('invalid block tag')
+        if isinstance(block, int):
+            block = hex(block)
+        return hex_to_int(self._call('eth_getUncleCountByBlockNumber', [block]))
 
     def eth_getCode(self, address, default_block=BLOCK_TAG_LATEST):
         '''
