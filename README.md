@@ -21,9 +21,9 @@ u'1'
 >>> c.web3_clientVersion()
 u'Geth/v1.1.3/linux/go1.5'
 >>> c.eth_gasPrice()
-u'0xba43b7400'
+50000000000
 >>> c.eth_blockNumber()
-u'0x38495'
+230891
 ```
 
 ### See also
