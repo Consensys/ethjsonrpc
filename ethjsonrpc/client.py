@@ -178,6 +178,8 @@ class EthJsonRpc(object):
     def web3_clientVersion(self):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#web3_clientversion
+
+        TESTED
         '''
         return self._call('web3_clientVersion')
 
@@ -191,60 +193,80 @@ class EthJsonRpc(object):
     def net_version(self):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#net_version
+
+        TESTED
         '''
         return self._call('net_version')
 
     def net_peerCount(self):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#net_peercount
+
+        TESTED
         '''
         return hex_to_int(self._call('net_peerCount'))
 
     def net_listening(self):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#net_listening
+
+        TESTED
         '''
         return self._call('net_listening')
 
     def eth_protocolVersion(self):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_protocolversion
+
+        TESTED
         '''
         return self._call('eth_protocolVersion')
 
     def eth_coinbase(self):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_coinbase
+
+        TESTED
         '''
         return self._call('eth_coinbase')
 
     def eth_mining(self):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_mining
+
+        TESTED
         '''
         return self._call('eth_mining')
 
     def eth_hashrate(self):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_hashrate
+
+        TESTED
         '''
         return hex_to_int(self._call('eth_hashrate'))
 
     def eth_gasPrice(self):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_gasprice
+
+        TESTED
         '''
         return hex_to_int(self._call('eth_gasPrice'))
 
     def eth_accounts(self):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_accounts
+
+        TESTED
         '''
         return self._call('eth_accounts')
 
     def eth_blockNumber(self):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_blocknumber
+
+        TESTED
         '''
         return hex_to_int(self._call('eth_blockNumber'))
 
@@ -419,6 +441,8 @@ class EthJsonRpc(object):
     def eth_getCompilers(self):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getcompilers
+
+        TESTED
         '''
         return self._call('eth_getCompilers')
 
@@ -461,6 +485,8 @@ class EthJsonRpc(object):
     def eth_newPendingTransactionFilter(self):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_newpendingtransactionfilter
+
+        TESTED
         '''
         return hex_to_int(self._call('eth_newPendingTransactionFilter'))
 
@@ -491,6 +517,8 @@ class EthJsonRpc(object):
     def eth_getWork(self):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getwork
+
+        TESTED
         '''
         return self._call('eth_getWork')
 
@@ -551,12 +579,16 @@ class EthJsonRpc(object):
     def shh_version(self):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#shh_version
+
+        N/A
         '''
         return self._call('shh_version')
 
     def shh_newIdentity(self):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#shh_newidentity
+
+        N/A
         '''
         return self._call('shh_newIdentity')
 
@@ -569,6 +601,8 @@ class EthJsonRpc(object):
     def shh_newGroup(self):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#shh_newgroup
+
+        N/A
         '''
         return self._call('shh_newGroup')
 
