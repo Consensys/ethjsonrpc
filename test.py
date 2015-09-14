@@ -3,8 +3,8 @@ from ethjsonrpc import EthJsonRpc
 methods = [
     'web3_clientVersion',
     'net_version',
-    'net_listening',
     'net_peerCount',
+    'net_listening',
     'eth_protocolVersion',
     'eth_coinbase',
     'eth_mining',
