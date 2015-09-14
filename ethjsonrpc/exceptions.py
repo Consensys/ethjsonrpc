@@ -1,0 +1,2 @@
+class EthJsonRpcError(Exception):
+    pass
