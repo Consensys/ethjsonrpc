@@ -8,7 +8,7 @@ Python client for Ethereum using the JSON-RPC interface
 ## Installation
 
 ```bash
-pip install ethjsonrpc
+$ pip install ethjsonrpc
 ```
 
 ### Example
