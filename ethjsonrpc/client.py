@@ -6,20 +6,12 @@ import requests
 from ethereum import utils
 from ethereum.abi import ContractTranslator, encode_abi, decode_abi
 
-from .utils import hex_to_int
+from .constants import BLOCK_TAGS, BLOCK_TAG_LATEST
+from .utils import hex_to_int, validate_block
 
 GETH_DEFAULT_RPC_PORT     = 8545
 ETH_DEFAULT_RPC_PORT      = 8080
 PYETHAPP_DEFAULT_RPC_PORT = 4000
-
-BLOCK_TAG_EARLIEST = 'earliest'
-BLOCK_TAG_LATEST   = 'latest'
-BLOCK_TAG_PENDING  = 'pending'
-BLOCK_TAGS = (
-    BLOCK_TAG_EARLIEST,
-    BLOCK_TAG_LATEST,
-    BLOCK_TAG_PENDING,
-)
 
 
 class EthJsonRpc(object):
@@ -295,11 +287,7 @@ class EthJsonRpc(object):
 
         TESTED
         '''
-        if isinstance(block, basestring):
-            if block not in BLOCK_TAGS:
-                raise ValueError('invalid block tag')
-        if isinstance(block, int):
-            block = hex(block)
+        block = validate_block(block)
         return hex_to_int(self._call('eth_getTransactionCount', [address, block]))
 
     def eth_getBlockTransactionCountByHash(self, block_hash):
@@ -316,11 +304,7 @@ class EthJsonRpc(object):
 
         TESTED
         '''
-        if isinstance(block, basestring):
-            if block not in BLOCK_TAGS:
-                raise ValueError('invalid block tag')
-        if isinstance(block, int):
-            block = hex(block)
+        block = validate_block(block)
         return hex_to_int(self._call('eth_getBlockTransactionCountByNumber', [block]))
 
     def eth_getUncleCountByBlockHash(self, block_hash):
@@ -337,11 +321,7 @@ class EthJsonRpc(object):
 
         TESTED
         '''
-        if isinstance(block, basestring):
-            if block not in BLOCK_TAGS:
-                raise ValueError('invalid block tag')
-        if isinstance(block, int):
-            block = hex(block)
+        block = validate_block(block)
         return hex_to_int(self._call('eth_getUncleCountByBlockNumber', [block]))
 
     def eth_getCode(self, address, default_block=BLOCK_TAG_LATEST):
@@ -426,11 +406,7 @@ class EthJsonRpc(object):
 
         TESTED
         '''
-        if isinstance(block, basestring):
-            if block not in BLOCK_TAGS:
-                raise ValueError('invalid block tag')
-        if isinstance(block, int):
-            block = hex(block)
+        block = validate_block(block)
         return self._call('eth_getBlockByNumber', [block, tx_objects])
 
     def eth_getTransactionByHash(self, tx_hash):
