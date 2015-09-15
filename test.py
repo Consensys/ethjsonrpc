@@ -70,3 +70,15 @@ print c.db_putHex(db_name, k, v)
 x = c.db_getHex(db_name, k)
 print x
 assert v == x
+
+################################################################################
+print '*' * 80
+
+b = (199583, '0x19d761c6f944eefe91ad70b9aff3d2d76c972e5bb68c443eea7c0eaa144cef9f')
+print c.eth_getBlockByHash(b[1], tx_objects=False)
+
+for x in ['earliest', 'latest', 'pending', b[0]]:
+    print c.eth_getBlockByNumber(x, tx_objects=False)
+
+tx = '0x12cd5d9a82049154c8990214a551479853d1bfe45852688833bc4ef86a29b1a3'
+print c.eth_getTransactionByHash(tx)

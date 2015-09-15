@@ -412,23 +412,34 @@ class EthJsonRpc(object):
         '''
         return self._call('eth_estimateGas')
 
-    def eth_getBlockByHash(self, block_hash, transaction_objects=True):
+    def eth_getBlockByHash(self, block_hash, tx_objects=True):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getblockbyhash
-        '''
-        return self._call('eth_getBlockByHash', [block_hash, transaction_objects])
 
-    def eth_getBlockByNumber(self, block_number, transaction_objects=True):
+        TESTED
+        '''
+        return self._call('eth_getBlockByHash', [block_hash, tx_objects])
+
+    def eth_getBlockByNumber(self, block=BLOCK_TAG_LATEST, tx_objects=True):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getblockbynumber
-        '''
-        return self._call('eth_getBlockByNumber', [block_number, transaction_objects])
 
-    def eth_getTransactionByHash(self, transaction_hash):
+        TESTED
+        '''
+        if isinstance(block, basestring):
+            if block not in BLOCK_TAGS:
+                raise ValueError('invalid block tag')
+        if isinstance(block, int):
+            block = hex(block)
+        return self._call('eth_getBlockByNumber', [block, tx_objects])
+
+    def eth_getTransactionByHash(self, tx_hash):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_gettransactionbyhash
+
+        TESTED
         '''
-        return self._call('eth_getTransactionByHash', [transaction_hash])
+        return self._call('eth_getTransactionByHash', [tx_hash])
 
     def eth_getTransactionByBlockHashAndIndex(self, block_hash, index):
         '''
