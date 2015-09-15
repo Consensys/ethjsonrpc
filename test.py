@@ -50,3 +50,21 @@ print 'eth_getUncleCountByBlockHash: %s (%s)' % (result, type(result))
 for x in ['earliest', 'latest', 'pending', b[0]]:
     result = c.eth_getUncleCountByBlockNumber(x)
     print 'eth_getUncleCountByBlockNumber: %s (%s)' % (result, type(result))
+
+print '*' * 80
+
+db_name = 'db_name'
+k = 'my_key'
+v = 'my_value'
+print c.db_putString(db_name, k, v)
+x = c.db_getString(db_name, k)
+print x
+assert v == x
+
+db_name = 'db_name'
+k = 'my_key'
+v = '0xabcdef'
+print c.db_putHex(db_name, k, v)
+x = c.db_getHex(db_name, k)
+print x
+assert v == x

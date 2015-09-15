@@ -559,6 +559,8 @@ class EthJsonRpc(object):
     def db_putString(self, database_name, key_name, string):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#db_putstring
+
+        TESTED
         '''
         warnings.warn('deprecated', DeprecationWarning)
         return self._call('db_putString', [database_name, key_name, string])
@@ -566,6 +568,8 @@ class EthJsonRpc(object):
     def db_getString(self, database_name, key_name):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#db_getstring
+
+        TESTED
         '''
         warnings.warn('deprecated', DeprecationWarning)
         return self._call('db_getString', [database_name, key_name])
@@ -573,16 +577,22 @@ class EthJsonRpc(object):
     def db_putHex(self, database_name, key_name, string):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#db_puthex
+
+        TESTED
         '''
+        if not string.startswith('0x'):
+            string = '0x{}'.format(string)
         warnings.warn('deprecated', DeprecationWarning)
-        return self._call('db_putHex', [database_name, key_name, string.encode('hex')])
+        return self._call('db_putHex', [database_name, key_name, string])
 
     def db_getHex(self, database_name, key_name):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#db_gethex
+
+        TESTED
         '''
         warnings.warn('deprecated', DeprecationWarning)
-        return self._call('db_getHex', [database_name, key_name]).decode('hex')
+        return self._call('db_getHex', [database_name, key_name])
 
     def shh_post(self, topics, payload, priority, ttl, _from=None, to=None):
         '''
