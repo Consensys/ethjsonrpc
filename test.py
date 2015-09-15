@@ -27,6 +27,7 @@ for m in methods:
     result = meth()
     print '%s: %s (%s)' % (m, result, type(result))
 
+################################################################################
 print '*' * 80
 
 addr = '0x1dcb8d1f0fcc8cbc8c2d76528e877f915e299fbe'
@@ -51,6 +52,7 @@ for x in ['earliest', 'latest', 'pending', b[0]]:
     result = c.eth_getUncleCountByBlockNumber(x)
     print 'eth_getUncleCountByBlockNumber: %s (%s)' % (result, type(result))
 
+################################################################################
 print '*' * 80
 
 db_name = 'db_name'
