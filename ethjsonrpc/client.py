@@ -458,18 +458,24 @@ class EthJsonRpc(object):
     def eth_compileLLL(self, code):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_compilelll
+
+        N/A
         '''
         return self._call('eth_compileLLL', [code])
 
     def eth_compileSolidity(self, code):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_compilesolidity
+
+        TESTED
         '''
         return self._call('eth_compileSolidity', [code])
 
     def eth_compileSerpent(self, code):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_compileserpent
+
+        N/A
         '''
         return self._call('eth_compileSerpent', [code])
 

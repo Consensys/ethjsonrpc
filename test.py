@@ -82,3 +82,15 @@ for x in ['earliest', 'latest', 'pending', b[0]]:
 
 tx = '0x12cd5d9a82049154c8990214a551479853d1bfe45852688833bc4ef86a29b1a3'
 print c.eth_getTransactionByHash(tx)
+
+################################################################################
+print '*' * 80
+
+code = 'contract Test {}'
+print c.eth_compileSolidity(code)
+
+#code = ''
+#print c.eth_compileSerpent(code)
+
+#code = ''
+#print c.eth_compileLLL(code)
