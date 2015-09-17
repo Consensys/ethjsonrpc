@@ -178,6 +178,8 @@ class EthJsonRpc(object):
     def web3_sha3(self, data):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#web3_sha3
+
+        NEEDS TESTING
         '''
         data = str(data).encode('hex')
         return self._call('web3_sha3', [data])
@@ -327,6 +329,8 @@ class EthJsonRpc(object):
     def eth_getCode(self, address, default_block=BLOCK_TAG_LATEST):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getcode
+
+        NEEDS TESTING
         '''
         if isinstance(default_block, basestring):
             if default_block not in BLOCK_TAGS:
@@ -336,12 +340,16 @@ class EthJsonRpc(object):
     def eth_sign(self, address, data):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_sign
+
+        NEEDS TESTING
         '''
         return self._call('eth_sign', [address, data])
 
     def eth_sendTransaction(self, to_address=None, function_name=None, data=None, value=0, from_address=None, gas=None, gas_price=None):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_sendtransaction
+
+        NEEDS TESTING
         '''
         # Default values for gas and gas_price
         gas = gas or self.DEFAULT_GAS_FOR_TRANSACTIONS
@@ -368,6 +376,8 @@ class EthJsonRpc(object):
     def eth_call(self, to_address, function_name, data=None, code=None, default_block=BLOCK_TAG_LATEST):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_call
+
+        NEEDS TESTING
         '''
         if isinstance(default_block, basestring):
             if default_block not in BLOCK_TAGS:
@@ -389,6 +399,8 @@ class EthJsonRpc(object):
     def eth_estimateGas(self):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_estimategas
+
+        NEEDS TESTING
         '''
         return self._call('eth_estimateGas')
 
@@ -494,6 +506,8 @@ class EthJsonRpc(object):
     def eth_newFilter(self, from_block=BLOCK_TAG_LATEST, to_block=BLOCK_TAG_LATEST, address=None, topics=None):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_newfilter
+
+        NEEDS TESTING
         '''
         _filter = {
             'fromBlock': from_block,
@@ -506,6 +520,8 @@ class EthJsonRpc(object):
     def eth_newBlockFilter(self, default_block=BLOCK_TAG_LATEST):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_newblockfilter
+
+        NEEDS TESTING
         '''
         return self._call('eth_newBlockFilter', [default_block])
 
@@ -520,24 +536,32 @@ class EthJsonRpc(object):
     def eth_uninstallFilter(self, filter_id):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_uninstallfilter
+
+        NEEDS TESTING
         '''
         return self._call('eth_uninstallFilter', [filter_id])
 
     def eth_getFilterChanges(self, filter_id):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getfilterchanges
+
+        NEEDS TESTING
         '''
         return self._call('eth_getFilterChanges', [filter_id])
 
     def eth_getFilterLogs(self, filter_id):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getfilterlogs
+
+        NEEDS TESTING
         '''
         return self._call('eth_getFilterLogs', [filter_id])
 
     def eth_getLogs(self, filter_object):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getlogs
+
+        NEEDS TESTING
         '''
         return self._call('eth_getLogs', [filter_object])
 
@@ -552,12 +576,16 @@ class EthJsonRpc(object):
     def eth_submitWork(self, nonce, header, mix_digest):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_submitwork
+
+        NEEDS TESTING
         '''
         return self._call('eth_submitWork', [nonce, header, mix_digest])
 
     def eth_submitHashrate(self, hash_rate, client_id):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_submithashrate
+
+        NEEDS TESTING
         '''
         return self._call('eth_submitHashrate', [hash_rate, client_id])
 
@@ -602,6 +630,8 @@ class EthJsonRpc(object):
     def shh_post(self, topics, payload, priority, ttl, _from=None, to=None):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#shh_post
+
+        NEEDS TESTING
         '''
         whisper_object = {
             'from':     _from,
@@ -632,6 +662,8 @@ class EthJsonRpc(object):
     def shh_hasIdentity(self, address):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#shh_hasidentity
+
+        NEEDS TESTING
         '''
         return self._call('shh_hasIdentity', [address])
 
@@ -646,12 +678,16 @@ class EthJsonRpc(object):
     def shh_addToGroup(self):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#shh_addtogroup
+
+        NEEDS TESTING
         '''
         return self._call('shh_addToGroup')
 
     def shh_newFilter(self, to, topics):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#shh_newfilter
+
+        NEEDS TESTING
         '''
         _filter = {
             'to':     to,
@@ -662,17 +698,23 @@ class EthJsonRpc(object):
     def shh_uninstallFilter(self, filter_id):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#shh_uninstallfilter
+
+        NEEDS TESTING
         '''
         return self._call('shh_uninstallFilter', [filter_id])
 
     def shh_getFilterChanges(self, filter_id):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#shh_getfilterchanges
+
+        NEEDS TESTING
         '''
         return self._call('shh_getFilterChanges', [filter_id])
 
     def shh_getMessages(self, filter_id):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#shh_getmessages
+
+        NEEDS TESTING
         '''
         return self._call('shh_getMessages', [filter_id])
