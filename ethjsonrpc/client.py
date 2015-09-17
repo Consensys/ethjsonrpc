@@ -417,35 +417,47 @@ class EthJsonRpc(object):
         '''
         return self._call('eth_getTransactionByHash', [tx_hash])
 
-    def eth_getTransactionByBlockHashAndIndex(self, block_hash, index):
+    def eth_getTransactionByBlockHashAndIndex(self, block_hash, index=0):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_gettransactionbyblockhashandindex
+
+        TESTED
         '''
         return self._call('eth_getTransactionByBlockHashAndIndex', [block_hash, hex(index)])
 
-    def eth_getTransactionByBlockNumberAndIndex(self, block_number, index):
+    def eth_getTransactionByBlockNumberAndIndex(self, block=BLOCK_TAG_LATEST, index=0):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_gettransactionbyblocknumberandindex
+
+        TESTED
         '''
-        return self._call('eth_getTransactionByBlockNumberAndIndex', [block_number, hex(index)])
+        block = validate_block(block)
+        return self._call('eth_getTransactionByBlockNumberAndIndex', [block, hex(index)])
 
     def eth_getTransactionReceipt(self, tx_hash):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_gettransactionreceipt
+
+        TESTED
         '''
         return self._call('eth_getTransactionReceipt', [tx_hash])
 
-    def eth_getUncleByBlockHashAndIndex(self, block_hash, index, transaction_objects=True):
+    def eth_getUncleByBlockHashAndIndex(self, block_hash, index=0):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getunclebyblockhashandindex
-        '''
-        return self._call('eth_getUncleByBlockHashAndIndex', [block_hash, hex(index), transaction_objects])
 
-    def eth_getUncleByBlockNumberAndIndex(self, block_number, index, transaction_objects=True):
+        TESTED
+        '''
+        return self._call('eth_getUncleByBlockHashAndIndex', [block_hash, hex(index)])
+
+    def eth_getUncleByBlockNumberAndIndex(self, block=BLOCK_TAG_LATEST, index=0):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getunclebyblocknumberandindex
+
+        TESTED
         '''
-        return self._call('eth_getUncleByBlockNumberAndIndex', [block_number, hex(index), transaction_objects])
+        block = validate_block(block)
+        return self._call('eth_getUncleByBlockNumberAndIndex', [block, hex(index)])
 
     def eth_getCompilers(self):
         '''

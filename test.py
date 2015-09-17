@@ -94,3 +94,23 @@ print c.eth_compileSolidity(code)
 
 #code = ''
 #print c.eth_compileLLL(code)
+
+################################################################################
+print '*' * 80
+
+b = (246236, '0xcd43703a1ead33ffa1f317636c7b67453c5cc03a3350cd71dbbdd70fcbe0987a')
+index = 2
+print c.eth_getTransactionByBlockHashAndIndex(b[1], index)
+
+for x in ['earliest', 'latest', 'pending', b[0]]:
+    print c.eth_getTransactionByBlockNumberAndIndex(b[0], index)
+
+tx = '0x27191ea9e8228c98bc4418fa60843540937b0c615b2db5e828756800f533f8cd'
+print c.eth_getTransactionReceipt(tx)
+
+b = (246294, '0x3d596ca3c7b344419567957b41b2132bb339d365b6b6b3b6a7645e5444914a16')
+index = 0
+print c.eth_getUncleByBlockHashAndIndex(b[1], index)
+
+for x in ['earliest', 'latest', 'pending', b[0]]:
+    print c.eth_getUncleByBlockNumberAndIndex(b[0], index)
