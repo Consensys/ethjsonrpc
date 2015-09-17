@@ -114,3 +114,14 @@ print c.eth_getUncleByBlockHashAndIndex(b[1], index)
 
 for x in ['earliest', 'latest', 'pending', b[0]]:
     print c.eth_getUncleByBlockNumberAndIndex(b[0], index)
+
+################################################################################
+print '*' * 80
+
+addr = '0x1dcb8d1f0fcc8cbc8c2d76528e877f915e299fbe'
+for x in ['earliest', 'latest', 'pending', 150000]:
+    print c.eth_getBalance(addr, x)
+
+addr = '0x407d73d8a49eeb85d32cf465507dd71d507100c1'
+for x in ['earliest', 'latest', 'pending', 2]:
+    print c.eth_getStorageAt(addr, 0, x)

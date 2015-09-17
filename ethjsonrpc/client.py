@@ -262,24 +262,24 @@ class EthJsonRpc(object):
         '''
         return hex_to_int(self._call('eth_blockNumber'))
 
-    def eth_getBalance(self, address=None, default_block=BLOCK_TAG_LATEST):
+    def eth_getBalance(self, address=None, block=BLOCK_TAG_LATEST):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getbalance
-        '''
-        if isinstance(default_block, basestring):
-            if default_block not in BLOCK_TAGS:
-                raise ValueError
-        address = address or self.eth_coinbase()
-        return self._call('eth_getBalance', [address, default_block])
 
-    def eth_getStorageAt(self, address, position, default_block=BLOCK_TAG_LATEST):
+        TESTED
+        '''
+        address = address or self.eth_coinbase()
+        block = validate_block(block)
+        return hex_to_int(self._call('eth_getBalance', [address, block]))
+
+    def eth_getStorageAt(self, address=None, position=0, block=BLOCK_TAG_LATEST):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getstorageat
+
+        TESTED
         '''
-        if isinstance(default_block, basestring):
-            if default_block not in BLOCK_TAGS:
-                raise ValueError
-        return self._call('eth_getStorageAt', [address, hex(position), default_block])
+        block = validate_block(block)
+        return self._call('eth_getStorageAt', [address, hex(position), block])
 
     def eth_getTransactionCount(self, address, block=BLOCK_TAG_LATEST):
         '''
