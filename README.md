@@ -26,6 +26,10 @@ u'Geth/v1.1.3/linux/go1.5'
 230891
 ```
 
+## Additional examples
+
+Please see `test.py` for additional examples.
+
 ## See also
 
 * https://github.com/ethereum/wiki/wiki/JSON-RPC
