@@ -179,7 +179,7 @@ class EthJsonRpc(object):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#web3_sha3
 
-        NEEDS TESTING
+        TESTED
         '''
         data = str(data).encode('hex')
         return self._call('web3_sha3', [data])
@@ -585,9 +585,9 @@ class EthJsonRpc(object):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_submithashrate
 
-        NEEDS TESTING
+        TESTED
         '''
-        return self._call('eth_submitHashrate', [hash_rate, client_id])
+        return self._call('eth_submitHashrate', [hex(hash_rate), client_id])
 
     def db_putString(self, db_name, key, value):
         '''

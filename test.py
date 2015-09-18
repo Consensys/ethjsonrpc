@@ -125,3 +125,12 @@ for x in ['earliest', 'latest', 'pending', 150000]:
 addr = '0x407d73d8a49eeb85d32cf465507dd71d507100c1'
 for x in ['earliest', 'latest', 'pending', 2]:
     print c.eth_getStorageAt(addr, 0, x)
+
+################################################################################
+print '*' * 80
+
+hash_rate = 1000000
+client_id = '0x59daa26581d0acd1fce254fb7e85952f4c09d0915afd33d3886cd914bc7d283c'
+print c.eth_submitHashrate(hash_rate, client_id)
+
+print c.web3_sha3('')
