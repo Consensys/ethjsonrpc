@@ -133,4 +133,7 @@ hash_rate = 1000000
 client_id = '0x59daa26581d0acd1fce254fb7e85952f4c09d0915afd33d3886cd914bc7d283c'
 print c.eth_submitHashrate(hash_rate, client_id)
 
-print c.web3_sha3('')
+digest = c.web3_sha3('')
+print digest
+# keccak-256, not sha3-256
+assert digest == '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470'
