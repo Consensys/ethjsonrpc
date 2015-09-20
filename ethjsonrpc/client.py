@@ -84,11 +84,25 @@ class EthJsonRpc(object):
         types = signature[signature.find('(') + 1: signature.find(')')].split(',')
         encoded_params = encode_abi(types, param_values)
         return utils.zpad(utils.encode_int(prefix), 4) + encoded_params
-
-    def _install_contract(self, language, contract_code, value=0, from_address=None, gas=None, gas_price=None):
-        byte_code = self.compilers[language](contract_code)
-        return self.eth_sendTransaction(data=byte_code, value=value, from_address=from_address, gas=gas, gas_price=gas_price)
+       
+    def _install_contract(self, language, contract_code, value=0, from_address=None, 
+                          gas=None, gas_price=None, ctor_sig=None, ctor_params=None, byte_data=None):
+        '''
+        Compiles a contract and then sends a transaction to create it - maybe passing parameters
+        to the constructor if ctor_sig and ctor_params are provided.
+        If byte_data is provided it is sent as-is rather than performing any compilation
+        '''
+        if not byte_data:
+            byte_data = self.compilers[language](contract_code)    
         
+        # constructor parameters>
+        if ctor_sig:
+            types = ctor_sig[ctor_sig.find('(') + 1: ctor_sig.find(')')].split(',')
+            encoded_params = encode_abi(types, ctor_params)                
+            byte_data = byte_data + encoded_params        
+        
+        return self.eth_sendTransaction(data=byte_data, value=value, from_address=from_address, gas=gas, gas_price=gas_price)        
+                        
     def install_solidity_contract(self, contract_code, value=0, from_address=None, gas=None, gas_price=None):
         '''
         Installs a solidity contract into ethereum node
@@ -107,7 +121,7 @@ class EthJsonRpc(object):
         '''
         return self._install_contract('lll', contract_code, value, from_address, gas, gas_price)
 
-    def contract_instant_call(self, to_address, function_signature, function_parameters=None, result_types=None, default_block=BLOCK_TAG_LATEST):
+    def contract_instant_call(self, to_address, function_signature, function_parameters=None, result_types=None, default_block=BLOCK_TAG_LATEST, from_address=None):
         '''
         This method makes a instant call on a contract function without the need to have the contract source code.
         Examples of function_signature in solidity:
@@ -125,8 +139,14 @@ class EthJsonRpc(object):
             },
             default_block
         ]
-        response = self._call('eth_call', params)
+        
+        if from_address:
+            params[0]['from'] = from_address
+        
+        response = self._call('eth_call', params)        
         return decode_abi(result_types, response[2:].decode('hex'))
+
+
 
     def contract_transaction_call(self, to_address, function_signature, function_parameters=None, from_address=None, gas=None, gas_price=None, default_block=BLOCK_TAG_LATEST):
         '''
@@ -141,12 +161,12 @@ class EthJsonRpc(object):
         # Default values for gas and gas_price
         gas = gas or self.DEFAULT_GAS_FOR_TRANSACTIONS
         gas_price = gas_price or self.DEFAULT_GAS_PRICE
-
+ 
         # Default value for from_address
         from_address = from_address or self.eth_accounts()[0]
-
+ 
         data = self._encode_function(function_signature, function_parameters)
-
+ 
         params = {
             'from':     from_address,
             'to':       to_address,
@@ -157,6 +177,7 @@ class EthJsonRpc(object):
         }
         response = self._call('eth_sendTransaction', [params])
         return response
+
 
     def create_contract(self, contract_code, value=0, from_address=None, gas=None, gas_price=None):
         self.update_code(contract_code)
