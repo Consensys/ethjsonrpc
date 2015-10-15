@@ -15,8 +15,8 @@ PYETHAPP_DEFAULT_RPC_PORT = 4000
 
 class EthJsonRpc(object):
 
-    DEFAULT_GAS_FOR_TRANSACTIONS = 500000
-    DEFAULT_GAS_PRICE = 10*10**12 #10 szabo
+    DEFAULT_GAS_PER_TX = 90000
+    DEFAULT_GAS_PRICE = 10 * 10**12  # 10 szabo
 
     def __init__(self, host='localhost', port=GETH_DEFAULT_RPC_PORT, tls=False):
         self.host = host
@@ -55,6 +55,45 @@ class EthJsonRpc(object):
         types = signature[signature.find('(') + 1: signature.find(')')].split(',')
         encoded_params = encode_abi(types, param_values)
         return utils.zpad(utils.encode_int(prefix), 4) + encoded_params
+
+################################################################################
+
+    def transfer(self, from_, to, amount):
+        '''
+        Send wei from one address to another
+        '''
+        return self.eth_sendTransaction(from_address=from_, to_address=to, value=amount)
+
+    def create_contract(self, from_, code):
+        '''
+        Create a contract on the blockchain from compiled EVM code. Returns the
+        address of the newly created contract.
+        '''
+        from_ = from_ or self.eth_coinbase()
+        tx = self.eth_sendTransaction(from_address=from_, data=code)
+        receipt = self.eth_getTransactionReceipt(tx)
+        return receipt['contractAddress']
+
+    def call(self, address, sig, args, result_types):
+        '''
+        Call a contract function on the RPC server, without sending a
+        transaction (useful for reading data)
+        '''
+        data = self._encode_function(sig, args)
+        data_binary = data.encode('hex')
+        response = self.eth_call(to_address=address, data=data_binary)
+        return decode_abi(result_types, response[2:].decode('hex'))
+
+    def call_with_transaction(self, address, sig, args, gas=None, gas_price=None):
+        '''
+        Call a contract function by sending a transaction (useful for storing
+        data)
+        '''
+        gas = gas or self.DEFAULT_GAS_FOR_TRANSACTIONS
+        gas_price = gas_price or self.DEFAULT_GAS_PRICE
+        data = self._encode_function(sig, args)
+        data_binary = data.encode('hex')
+        return self.eth_sendTransaction(to_address=address, data=data_binary, gas=gas, gas_price=gas_price)
 
 ################################################################################
 
@@ -236,35 +275,27 @@ class EthJsonRpc(object):
         '''
         return self._call('eth_sign', [address, data])
 
-    def eth_sendTransaction(self, to_address=None, function_name=None, data=None, value=0, from_address=None, gas=None, gas_price=None):
+    def eth_sendTransaction(self, to_address=None, from_address=None, gas=None, gas_price=None, value=None, data=None):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_sendtransaction
 
         NEEDS TESTING
         '''
-        # Default values for gas and gas_price
-        gas = gas or self.DEFAULT_GAS_FOR_TRANSACTIONS
-        gas_price = gas_price or self.DEFAULT_GAS_PRICE
-
-        # Default value for from_address
-        from_address = from_address or self.eth_accounts()[0]
-
-        if function_name:
-            if data is None:
-                data = []
-            data = self.translation.encode(function_name, data)
-
-        params = {
-            'from':     from_address,
-            'to':       to_address,
-            'gas':      '0x{0:x}'.format(gas),
-            'gasPrice': '0x{0:x}'.format(gas_price),
-            'value':    '0x{0:x}'.format(value) if value else None,
-            'data':     '0x{0}'.format(data.encode('hex')) if data else None
-        }
+        params = {}
+        params['from'] = from_address or self.eth_coinbase()
+        if to_address is not None:
+            params['to'] = to_address
+        if gas is not None:
+            params['gas'] = hex(gas)
+        if gas_price is not None:
+            params['gasPrice'] = hex(gas_price)
+        if value is not None:
+            params['value'] = hex(value)
+        if data is not None:
+            params['data'] = data
         return self._call('eth_sendTransaction', [params])
 
-    def eth_call(self, to_address, function_name, data=None, code=None, default_block=BLOCK_TAG_LATEST):
+    def eth_call(self, to_address, from_address=None, gas=None, gas_price=None, value=None, data=None, default_block=BLOCK_TAG_LATEST):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_call
 
@@ -273,19 +304,19 @@ class EthJsonRpc(object):
         if isinstance(default_block, basestring):
             if default_block not in BLOCK_TAGS:
                 raise ValueError
-        data = data or []
-        data = self.translation.encode(function_name, data)
-        params = [
-            {
-                'to': to_address,
-                'data': '0x{0}'.format(data.encode('hex'))
-            },
-            default_block
-        ]
-        response = self._call('eth_call', params)
-        if function_name:
-            response = self.translation.decode(function_name, response[2:].decode('hex'))
-        return response
+        obj = {}
+        obj['to'] = to_address
+        if from_address is not None:
+            obj['from'] = from_address
+        if gas is not None:
+            obj['gas'] = hex(gas)
+        if gas_price is not None:
+            obj['gasPrice'] = hex(gas_price)
+        if value is not None:
+            obj['value'] = value
+        if data is not None:
+            obj['data'] = data
+        return self._call('eth_call', [obj, default_block])
 
     def eth_estimateGas(self):
         '''
