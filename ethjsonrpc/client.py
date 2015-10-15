@@ -549,14 +549,14 @@ class EthJsonRpc(object):
         warnings.warn('deprecated', DeprecationWarning)
         return self._call('db_getHex', [db_name, key])
 
-    def shh_post(self, topics, payload, priority, ttl, _from=None, to=None):
+    def shh_post(self, topics, payload, priority, ttl, from_=None, to=None):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#shh_post
 
         NEEDS TESTING
         '''
         whisper_object = {
-            'from':     _from,
+            'from':     from_,
             'to':       to,
             'topics':   topics,
             'payload':  payload,
