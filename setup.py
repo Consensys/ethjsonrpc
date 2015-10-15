@@ -22,8 +22,7 @@ setup(
         'Programming Language :: Python :: 2',
     ],
     install_requires=[
-        'ethereum==1.0.0',
-        'ethereum-serpent==2.0.0',
-        'requests==2.7.0',
+        'ethereum==1.0.6',
+        'requests==2.8.1',
     ],
 )
