@@ -89,7 +89,7 @@ class EthJsonRpc(object):
         Call a contract function by sending a transaction (useful for storing
         data)
         '''
-        gas = gas or self.DEFAULT_GAS_FOR_TRANSACTIONS
+        gas = gas or self.DEFAULT_GAS_PER_TX
         gas_price = gas_price or self.DEFAULT_GAS_PRICE
         data = self._encode_function(sig, args)
         data_binary = data.encode('hex')
