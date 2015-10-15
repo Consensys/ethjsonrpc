@@ -19,11 +19,11 @@ $ pip install ethjsonrpc
 >>> c.net_version()
 u'1'
 >>> c.web3_clientVersion()
-u'Geth/v1.1.3/linux/go1.5'
+u'Geth/v1.2.2/linux/go1.5'
 >>> c.eth_gasPrice()
 50000000000
 >>> c.eth_blockNumber()
-230891
+386199
 ```
 
 ## Additional examples
