@@ -12,3 +12,11 @@ def validate_block(block):
     if isinstance(block, int):
         block = hex(block)
     return block
+
+
+def wei_to_ether(wei):
+    return 1.0 * wei / 10**18
+
+
+def ether_to_wei(ether):
+    return ether * 10**18

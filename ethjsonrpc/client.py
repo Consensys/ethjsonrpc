@@ -8,8 +8,8 @@ from ethereum.abi import ContractTranslator, encode_abi, decode_abi
 from .constants import BLOCK_TAGS, BLOCK_TAG_LATEST
 from .utils import hex_to_int, validate_block
 
-GETH_DEFAULT_RPC_PORT     = 8545
-ETH_DEFAULT_RPC_PORT      = 8080
+GETH_DEFAULT_RPC_PORT = 8545
+ETH_DEFAULT_RPC_PORT = 8080
 PYETHAPP_DEFAULT_RPC_PORT = 4000
 
 
@@ -26,17 +26,17 @@ class EthJsonRpc(object):
     def _call(self, method, params=None, _id=0):
 
         params = params or []
-        data = json.dumps({
+        data = {
             'jsonrpc': '2.0',
             'method': method,
             'params': params,
-            'id': _id
-        })
+            'id': _id,
+        }
         scheme = 'http'
         if self.tls:
             scheme += 's'
         url = '{}://{}:{}'.format(scheme, self.host, self.port)
-        response = requests.post(url, data=data).json()
+        response = requests.post(url, data=json.dumps(data)).json()
         if 'result' in response:
             return response['result']
         else:
