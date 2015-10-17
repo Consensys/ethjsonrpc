@@ -1,1 +1,8 @@
-from client import EthJsonRpc
+from ethjsonrpc.client import (EthJsonRpc, ETH_DEFAULT_RPC_PORT,
+                               GETH_DEFAULT_RPC_PORT,
+                               PYETHAPP_DEFAULT_RPC_PORT)
+
+from ethjsonrpc.exceptions import (ConnectionError, BadStatusCodeError,
+                                   BadJsonError, BadResponseError)
+
+from ethjsonrpc.utils import wei_to_ether, ether_to_wei

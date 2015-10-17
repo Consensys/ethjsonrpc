@@ -1,4 +1,4 @@
-from .constants import BLOCK_TAGS
+from ethjsonrpc.constants import BLOCK_TAGS
 
 
 def hex_to_int(x):

@@ -2,11 +2,14 @@ import json
 import warnings
 
 import requests
+from requests.exceptions import ConnectionError as RequestsConnectionError
 from ethereum import utils
 from ethereum.abi import ContractTranslator, encode_abi, decode_abi
 
-from .constants import BLOCK_TAGS, BLOCK_TAG_LATEST
-from .utils import hex_to_int, validate_block
+from ethjsonrpc.constants import BLOCK_TAGS, BLOCK_TAG_LATEST
+from ethjsonrpc.utils import hex_to_int, validate_block
+from ethjsonrpc.exceptions import (ConnectionError, BadStatusCodeError,
+                                   BadJsonError, BadResponseError)
 
 GETH_DEFAULT_RPC_PORT = 8545
 ETH_DEFAULT_RPC_PORT = 8080
@@ -36,11 +39,20 @@ class EthJsonRpc(object):
         if self.tls:
             scheme += 's'
         url = '{}://{}:{}'.format(scheme, self.host, self.port)
-        response = requests.post(url, data=json.dumps(data)).json()
-        if 'result' in response:
+        try:
+            r = requests.post(url, data=json.dumps(data))
+        except RequestsConnectionError:
+            raise ConnectionError
+        if r.status_code / 100 != 2:
+            raise BadStatusCodeError(r.status_code)
+        try:
+            response = r.json()
+        except ValueError:
+            raise BadJsonError(r.text)
+        try:
             return response['result']
-        else:
-            raise RuntimeError('Error from RPC call. Returned payload: {0}'.format(response))
+        except KeyError:
+            raise BadResponseError(response)
 
     def _encode_function(self, signature, param_values):
 
