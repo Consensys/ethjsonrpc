@@ -69,6 +69,8 @@ class EthJsonRpc(object):
         return utils.zpad(utils.encode_int(prefix), 4) + encoded_params
 
 ################################################################################
+# high-level methods
+################################################################################
 
     def transfer(self, from_, to, amount):
         '''
@@ -107,6 +109,8 @@ class EthJsonRpc(object):
         data_hex = data.encode('hex')
         return self.eth_sendTransaction(from_address=from_, to_address=address, data=data_hex, gas=gas, gas_price=gas_price)
 
+################################################################################
+# JSON-RPC methods
 ################################################################################
 
     def web3_clientVersion(self):
