@@ -3,7 +3,7 @@
 Python client for Ethereum using the JSON-RPC interface
 
 * lightweight
-* complete: implements all 60 JSON-RPC methods
+* complete: implements all 61 JSON-RPC methods
 
 ## Important note
 

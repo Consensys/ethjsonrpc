@@ -295,6 +295,14 @@ class EthJsonRpc(object):
             params['data'] = data
         return self._call('eth_sendTransaction', [params])
 
+    def eth_sendRawTransaction(self, data):
+        '''
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_sendrawtransaction
+
+        NEEDS TESTING
+        '''
+        return self._call('eth_sendRawTransaction', [{'data': data}])
+
     def eth_call(self, to_address, from_address=None, gas=None, gas_price=None, value=None, data=None, default_block=BLOCK_TAG_LATEST):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_call
