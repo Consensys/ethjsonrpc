@@ -7,7 +7,7 @@ setup(
     name='ethjsonrpc',
     version='0.2.2',
     description='Ethereum JSON-RPC client',
-    long_description='Ethereum JSON-RPC client',
+    long_description=open('README.rst').read(),
     author='ConsenSys',
     author_email=['info@consensys.net'],
     url='https://github.com/ConsenSys/ethjsonrpc',
