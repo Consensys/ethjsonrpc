@@ -15,6 +15,7 @@ Installation
 ------------
 
 .. code:: bash
+
    $ pip install ethjsonrpc
 
 
