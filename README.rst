@@ -19,7 +19,8 @@ Installation
    $ pip install ethjsonrpc
 
 
-## Example
+Example
+-------
 
 .. code:: python
 
