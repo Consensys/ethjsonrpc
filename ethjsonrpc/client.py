@@ -292,7 +292,8 @@ class EthJsonRpc(object):
         '''
         return self._call('eth_sign', [address, data])
 
-    def eth_sendTransaction(self, to_address=None, from_address=None, gas=None, gas_price=None, value=None, data=None):
+    def eth_sendTransaction(self, to_address=None, from_address=None, gas=None, gas_price=None, value=None, data=None,
+                            nonce=None):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_sendtransaction
 
@@ -310,6 +311,8 @@ class EthJsonRpc(object):
             params['value'] = hex(value)
         if data is not None:
             params['data'] = data
+        if nonce is not None:
+            params['nonce'] = hex(nonce)
         return self._call('eth_sendTransaction', [params])
 
     def eth_sendRawTransaction(self, data):
