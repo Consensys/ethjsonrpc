@@ -4,7 +4,7 @@ import warnings
 import requests
 from requests.exceptions import ConnectionError as RequestsConnectionError
 from ethereum import utils
-from ethereum.abi import ContractTranslator, encode_abi, decode_abi
+from ethereum.abi import encode_abi, decode_abi
 
 from ethjsonrpc.constants import BLOCK_TAGS, BLOCK_TAG_LATEST
 from ethjsonrpc.utils import hex_to_int, validate_block
@@ -31,9 +31,9 @@ class EthJsonRpc(object):
         params = params or []
         data = {
             'jsonrpc': '2.0',
-            'method': method,
-            'params': params,
-            'id': _id,
+            'method':  method,
+            'params':  params,
+            'id':      _id,
         }
         scheme = 'http'
         if self.tls:
@@ -607,7 +607,7 @@ class EthJsonRpc(object):
             'topics':   topics,
             'payload':  payload,
             'priority': hex(priority),
-            'ttl':      hex(ttl)
+            'ttl':      hex(ttl),
         }
         return self._call('shh_post', [whisper_object])
 
