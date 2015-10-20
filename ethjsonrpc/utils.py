@@ -1,7 +1,7 @@
 from ethjsonrpc.constants import BLOCK_TAGS
 
 
-def hex_to_int(x):
+def hex_to_dec(x):
     return int(x, 16)
 
 

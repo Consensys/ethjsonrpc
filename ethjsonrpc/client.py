@@ -7,7 +7,7 @@ from ethereum import utils
 from ethereum.abi import encode_abi, decode_abi
 
 from ethjsonrpc.constants import BLOCK_TAGS, BLOCK_TAG_LATEST
-from ethjsonrpc.utils import hex_to_int, validate_block
+from ethjsonrpc.utils import hex_to_dec, validate_block
 from ethjsonrpc.exceptions import (ConnectionError, BadStatusCodeError,
                                    BadJsonError, BadResponseError)
 
@@ -149,7 +149,7 @@ class EthJsonRpc(object):
 
         TESTED
         '''
-        return hex_to_int(self._call('net_peerCount'))
+        return hex_to_dec(self._call('net_peerCount'))
 
     def net_listening(self):
         '''
@@ -189,7 +189,7 @@ class EthJsonRpc(object):
 
         TESTED
         '''
-        return hex_to_int(self._call('eth_hashrate'))
+        return hex_to_dec(self._call('eth_hashrate'))
 
     def eth_gasPrice(self):
         '''
@@ -197,7 +197,7 @@ class EthJsonRpc(object):
 
         TESTED
         '''
-        return hex_to_int(self._call('eth_gasPrice'))
+        return hex_to_dec(self._call('eth_gasPrice'))
 
     def eth_accounts(self):
         '''
@@ -213,7 +213,7 @@ class EthJsonRpc(object):
 
         TESTED
         '''
-        return hex_to_int(self._call('eth_blockNumber'))
+        return hex_to_dec(self._call('eth_blockNumber'))
 
     def eth_getBalance(self, address=None, block=BLOCK_TAG_LATEST):
         '''
@@ -223,7 +223,7 @@ class EthJsonRpc(object):
         '''
         address = address or self.eth_coinbase()
         block = validate_block(block)
-        return hex_to_int(self._call('eth_getBalance', [address, block]))
+        return hex_to_dec(self._call('eth_getBalance', [address, block]))
 
     def eth_getStorageAt(self, address=None, position=0, block=BLOCK_TAG_LATEST):
         '''
@@ -241,7 +241,7 @@ class EthJsonRpc(object):
         TESTED
         '''
         block = validate_block(block)
-        return hex_to_int(self._call('eth_getTransactionCount', [address, block]))
+        return hex_to_dec(self._call('eth_getTransactionCount', [address, block]))
 
     def eth_getBlockTransactionCountByHash(self, block_hash):
         '''
@@ -249,7 +249,7 @@ class EthJsonRpc(object):
 
         TESTED
         '''
-        return hex_to_int(self._call('eth_getBlockTransactionCountByHash', [block_hash]))
+        return hex_to_dec(self._call('eth_getBlockTransactionCountByHash', [block_hash]))
 
     def eth_getBlockTransactionCountByNumber(self, block=BLOCK_TAG_LATEST):
         '''
@@ -258,7 +258,7 @@ class EthJsonRpc(object):
         TESTED
         '''
         block = validate_block(block)
-        return hex_to_int(self._call('eth_getBlockTransactionCountByNumber', [block]))
+        return hex_to_dec(self._call('eth_getBlockTransactionCountByNumber', [block]))
 
     def eth_getUncleCountByBlockHash(self, block_hash):
         '''
@@ -266,7 +266,7 @@ class EthJsonRpc(object):
 
         TESTED
         '''
-        return hex_to_int(self._call('eth_getUncleCountByBlockHash', [block_hash]))
+        return hex_to_dec(self._call('eth_getUncleCountByBlockHash', [block_hash]))
 
     def eth_getUncleCountByBlockNumber(self, block=BLOCK_TAG_LATEST):
         '''
@@ -275,7 +275,7 @@ class EthJsonRpc(object):
         TESTED
         '''
         block = validate_block(block)
-        return hex_to_int(self._call('eth_getUncleCountByBlockNumber', [block]))
+        return hex_to_dec(self._call('eth_getUncleCountByBlockNumber', [block]))
 
     def eth_getCode(self, address, default_block=BLOCK_TAG_LATEST):
         '''
@@ -503,7 +503,7 @@ class EthJsonRpc(object):
 
         TESTED
         '''
-        return hex_to_int(self._call('eth_newPendingTransactionFilter'))
+        return hex_to_dec(self._call('eth_newPendingTransactionFilter'))
 
     def eth_uninstallFilter(self, filter_id):
         '''
