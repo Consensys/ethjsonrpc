@@ -107,7 +107,8 @@ class EthJsonRpc(object):
         gas_price = gas_price or self.DEFAULT_GAS_PRICE
         data = self._encode_function(sig, args)
         data_hex = data.encode('hex')
-        return self.eth_sendTransaction(from_address=from_, to_address=address, data=data_hex, gas=gas, gas_price=gas_price)
+        return self.eth_sendTransaction(from_address=from_, to_address=address, data=data_hex, gas=gas,
+                                        gas_price=gas_price)
 
 ################################################################################
 # JSON-RPC methods
@@ -319,7 +320,8 @@ class EthJsonRpc(object):
         '''
         return self._call('eth_sendRawTransaction', [{'data': data}])
 
-    def eth_call(self, to_address, from_address=None, gas=None, gas_price=None, value=None, data=None, default_block=BLOCK_TAG_LATEST):
+    def eth_call(self, to_address, from_address=None, gas=None, gas_price=None, value=None, data=None,
+                 default_block=BLOCK_TAG_LATEST):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_call
 
