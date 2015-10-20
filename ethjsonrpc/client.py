@@ -347,13 +347,30 @@ class EthJsonRpc(object):
             obj['data'] = data
         return self._call('eth_call', [obj, default_block])
 
-    def eth_estimateGas(self):
+    def eth_estimateGas(self, to_address=None, from_address=None, gas=None, gas_price=None, value=None, data=None,
+                        default_block=BLOCK_TAG_LATEST):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_estimategas
 
         NEEDS TESTING
         '''
-        return self._call('eth_estimateGas')
+        if isinstance(default_block, basestring):
+            if default_block not in BLOCK_TAGS:
+                raise ValueError
+        obj = {}
+        if to_address is not None:
+            obj['to'] = to_address
+        if from_address is not None:
+            obj['from'] = from_address
+        if gas is not None:
+            obj['gas'] = hex(gas)
+        if gas_price is not None:
+            obj['gasPrice'] = hex(gas_price)
+        if value is not None:
+            obj['value'] = value
+        if data is not None:
+            obj['data'] = data
+        return self._call('eth_estimateGas', [obj, default_block])
 
     def eth_getBlockByHash(self, block_hash, tx_objects=True):
         '''
