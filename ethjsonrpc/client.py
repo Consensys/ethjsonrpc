@@ -12,7 +12,7 @@ from ethjsonrpc.exceptions import (ConnectionError, BadStatusCodeError,
                                    BadJsonError, BadResponseError)
 
 GETH_DEFAULT_RPC_PORT = 8545
-ETH_DEFAULT_RPC_PORT = 8080
+ETH_DEFAULT_RPC_PORT = 8545
 PYETHAPP_DEFAULT_RPC_PORT = 4000
 
 
