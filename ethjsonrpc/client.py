@@ -88,7 +88,12 @@ class EthJsonRpc(object):
              types = sig[sig.find('(') + 1: sig.find(')')].split(',')
              encoded_params = encode_abi(types, args)
              code += encoded_params.encode('hex')
-        tx = self.eth_sendTransaction(from_address=from_, data=code)
+        return self.eth_sendTransaction(from_address=from_, data=code)
+
+    def get_contract_address(self, tx):
+        '''
+        Get the address for a contract from the transaction that created it
+        '''
         receipt = self.eth_getTransactionReceipt(tx)
         return receipt['contractAddress']
 
