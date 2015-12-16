@@ -122,8 +122,8 @@ Implemented JSON-RPC methods
 * web3_clientVersion
 * web3_sha3
 * net_version
-* net_peerCount
 * net_listening
+* net_peerCount
 * eth_protocolVersion
 * eth_coinbase
 * eth_mining
@@ -153,8 +153,8 @@ Implemented JSON-RPC methods
 * eth_getUncleByBlockHashAndIndex
 * eth_getUncleByBlockNumberAndIndex
 * eth_getCompilers
-* eth_compileLLL
 * eth_compileSolidity
+* eth_compileLLL
 * eth_compileSerpent
 * eth_newFilter
 * eth_newBlockFilter
@@ -170,8 +170,8 @@ Implemented JSON-RPC methods
 * db_getString
 * db_putHex
 * db_getHex
-* shh_post
 * shh_version
+* shh_post
 * shh_newIdentity
 * shh_hasIdentity
 * shh_newGroup

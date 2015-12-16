@@ -148,14 +148,6 @@ class EthJsonRpc(object):
         '''
         return self._call('net_version')
 
-    def net_peerCount(self):
-        '''
-        https://github.com/ethereum/wiki/wiki/JSON-RPC#net_peercount
-
-        TESTED
-        '''
-        return hex_to_dec(self._call('net_peerCount'))
-
     def net_listening(self):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#net_listening
@@ -163,6 +155,14 @@ class EthJsonRpc(object):
         TESTED
         '''
         return self._call('net_listening')
+
+    def net_peerCount(self):
+        '''
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#net_peercount
+
+        TESTED
+        '''
+        return hex_to_dec(self._call('net_peerCount'))
 
     def eth_protocolVersion(self):
         '''
@@ -456,14 +456,6 @@ class EthJsonRpc(object):
         '''
         return self._call('eth_getCompilers')
 
-    def eth_compileLLL(self, code):
-        '''
-        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_compilelll
-
-        N/A
-        '''
-        return self._call('eth_compileLLL', [code])
-
     def eth_compileSolidity(self, code):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_compilesolidity
@@ -471,6 +463,14 @@ class EthJsonRpc(object):
         TESTED
         '''
         return self._call('eth_compileSolidity', [code])
+
+    def eth_compileLLL(self, code):
+        '''
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_compilelll
+
+        N/A
+        '''
+        return self._call('eth_compileLLL', [code])
 
     def eth_compileSerpent(self, code):
         '''
@@ -604,6 +604,14 @@ class EthJsonRpc(object):
         warnings.warn('deprecated', DeprecationWarning)
         return self._call('db_getHex', [db_name, key])
 
+    def shh_version(self):
+        '''
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#shh_version
+
+        N/A
+        '''
+        return self._call('shh_version')
+
     def shh_post(self, topics, payload, priority, ttl, from_=None, to=None):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#shh_post
@@ -619,14 +627,6 @@ class EthJsonRpc(object):
             'ttl':      hex(ttl),
         }
         return self._call('shh_post', [whisper_object])
-
-    def shh_version(self):
-        '''
-        https://github.com/ethereum/wiki/wiki/JSON-RPC#shh_version
-
-        N/A
-        '''
-        return self._call('shh_version')
 
     def shh_newIdentity(self):
         '''
