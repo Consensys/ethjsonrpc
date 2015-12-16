@@ -172,6 +172,14 @@ class EthJsonRpc(object):
         '''
         return self._call('eth_protocolVersion')
 
+    def eth_syncing(self):
+        '''
+        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_syncing
+
+        NEEDS TESTING
+        '''
+        return self._call('eth_syncing')
+
     def eth_coinbase(self):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_coinbase

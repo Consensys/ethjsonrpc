@@ -125,6 +125,7 @@ Implemented JSON-RPC methods
 * net_listening
 * net_peerCount
 * eth_protocolVersion
+* eth_syncing
 * eth_coinbase
 * eth_mining
 * eth_hashrate
