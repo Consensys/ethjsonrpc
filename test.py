@@ -6,6 +6,7 @@ methods = [
     'net_peerCount',
     'net_listening',
     'eth_protocolVersion',
+    'eth_syncing',
     'eth_coinbase',
     'eth_mining',
     'eth_hashrate',

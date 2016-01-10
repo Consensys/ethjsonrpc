@@ -176,7 +176,7 @@ class EthJsonRpc(object):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_syncing
 
-        NEEDS TESTING
+        TESTED
         '''
         return self._call('eth_syncing')
 
