@@ -3,7 +3,7 @@ ethjsonrpc
 
 Python client for Ethereum using the JSON-RPC interface
 
-* complete: implements all 61 JSON-RPC methods
+* complete: implements all 62 JSON-RPC methods
 * provides a high-level interface to create contracts on the blockchain and to call contract methods
 
 Important note
