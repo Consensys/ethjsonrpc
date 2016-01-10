@@ -31,11 +31,11 @@ Example
    >>> c.net_version()
    u'1'
    >>> c.web3_clientVersion()
-   u'Geth/v1.2.3/linux/go1.5'
+   u'Geth/v1.3.3/linux/go1.5.1'
    >>> c.eth_gasPrice()
    50000000000
    >>> c.eth_blockNumber()
-   440020
+   828948
 
 
 High-level functionality
