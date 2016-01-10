@@ -22,6 +22,7 @@ setup(
         'Programming Language :: Python :: 2',
     ],
     install_requires=[
+        'bitcoin==1.1.39',  # work around 1.1.40 bug (required by ethereum library)
         'ethereum==1.0.8',
         'requests==2.9.1',
     ],
