@@ -14,7 +14,7 @@ setup(
     packages=['ethjsonrpc'],
     license='Unlicense',
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'License :: Public Domain',
         'Operating System :: OS Independent',
