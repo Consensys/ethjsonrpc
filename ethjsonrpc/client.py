@@ -81,7 +81,7 @@ class EthJsonRpc(object):
     def create_contract(self, from_, code, sig=None, args=None):
         '''
         Create a contract on the blockchain from compiled EVM code. Returns the
-        address of the newly created contract.
+        transaction hash.
         '''
         from_ = from_ or self.eth_coinbase()
         if sig is not None and args is not None:
