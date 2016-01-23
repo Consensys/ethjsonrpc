@@ -78,7 +78,7 @@ class EthJsonRpc(object):
         '''
         return self.eth_sendTransaction(from_address=from_, to_address=to, value=amount)
 
-    def create_contract(self, from_, code, sig=None, args=None):
+    def create_contract(self, from_, code, gas, sig=None, args=None):
         '''
         Create a contract on the blockchain from compiled EVM code. Returns the
         transaction hash.
@@ -88,7 +88,7 @@ class EthJsonRpc(object):
              types = sig[sig.find('(') + 1: sig.find(')')].split(',')
              encoded_params = encode_abi(types, args)
              code += encoded_params.encode('hex')
-        return self.eth_sendTransaction(from_address=from_, data=code)
+        return self.eth_sendTransaction(from_address=from_, gas=gas, data=code)
 
     def get_contract_address(self, tx):
         '''

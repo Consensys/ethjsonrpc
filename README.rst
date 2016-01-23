@@ -82,7 +82,7 @@ Creating a contract on the blockchain
 .. code:: python
 
    >>> # continued from above
-   >>> contract_tx = c.create_contract(c.eth_coinbase(), compiled)
+   >>> contract_tx = c.create_contract(c.eth_coinbase(), compiled, gas=300000)
    >>> # wait here for the contract to be created when a new block is mined
    >>> contract_addr = c.get_contract_address(contract_tx)
    >>> contract_addr
