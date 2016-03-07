@@ -19,7 +19,7 @@ PYETHAPP_DEFAULT_RPC_PORT = 4000
 class EthJsonRpc(object):
 
     DEFAULT_GAS_PER_TX = 90000
-    DEFAULT_GAS_PRICE = 10 * 10**12  # 10 szabo
+    DEFAULT_GAS_PRICE = 50 * 10**9  # 50 gwei
 
     def __init__(self, host='localhost', port=GETH_DEFAULT_RPC_PORT, tls=False):
         self.host = host
