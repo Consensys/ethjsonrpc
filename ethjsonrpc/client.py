@@ -26,7 +26,7 @@ class EthJsonRpc(object):
         self.port = port
         self.tls = tls
 
-    def _call(self, method, params=None, _id=0):
+    def _call(self, method, params=None, _id=1):
 
         params = params or []
         data = {
