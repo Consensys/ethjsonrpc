@@ -14,6 +14,17 @@ The API is not yet stable, so please use caution when upgrading.
 Installation
 ------------
 
+You may need additional libraries and tools before installing ethjsonrpc. On Ubuntu 14.04:
+
+.. code:: bash
+
+   $ sudo apt-get install python-virtualenv  # optional
+   $ sudo apt-get install libpython-dev
+   $ sudo apt-get install libssl-dev
+
+
+To install ethjsonrpc:
+
 .. code:: bash
 
    $ pip install ethjsonrpc
