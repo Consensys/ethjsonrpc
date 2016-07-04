@@ -321,15 +321,15 @@ class EthJsonRpc(object):
         if to_address is not None:
             params['to'] = to_address
         if gas is not None:
-            params['gas'] = hex(gas)
+            params['gas'] = hex(gas).rstrip("L")
         if gas_price is not None:
-            params['gasPrice'] = hex(gas_price)
+            params['gasPrice'] = hex(gas_price).rstrip("L")
         if value is not None:
-            params['value'] = hex(value)
+            params['value'] = hex(value).rstrip("L")
         if data is not None:
             params['data'] = data
         if nonce is not None:
-            params['nonce'] = hex(nonce)
+            params['nonce'] = hex(nonce).rstrip("L")
         return self._call('eth_sendTransaction', [params])
 
     def eth_sendRawTransaction(self, data):
@@ -355,9 +355,9 @@ class EthJsonRpc(object):
         if from_address is not None:
             obj['from'] = from_address
         if gas is not None:
-            obj['gas'] = hex(gas)
+            obj['gas'] = hex(gas).rstrip("L")
         if gas_price is not None:
-            obj['gasPrice'] = hex(gas_price)
+            obj['gasPrice'] = hex(gas_price).rstrip("L")
         if value is not None:
             obj['value'] = value
         if data is not None:
@@ -380,9 +380,9 @@ class EthJsonRpc(object):
         if from_address is not None:
             obj['from'] = from_address
         if gas is not None:
-            obj['gas'] = hex(gas)
+            obj['gas'] = hex(gas).rstrip("L")
         if gas_price is not None:
-            obj['gasPrice'] = hex(gas_price)
+            obj['gasPrice'] = hex(gas_price).rstrip("L")
         if value is not None:
             obj['value'] = value
         if data is not None:
@@ -631,8 +631,8 @@ class EthJsonRpc(object):
             'to':       to,
             'topics':   topics,
             'payload':  payload,
-            'priority': hex(priority),
-            'ttl':      hex(ttl),
+            'priority': hex(priority).rstrip("L"),
+            'ttl':      hex(ttl).rstrip("L"),
         }
         return self._call('shh_post', [whisper_object])
 
