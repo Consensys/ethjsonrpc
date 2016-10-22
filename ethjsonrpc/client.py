@@ -40,8 +40,9 @@ class EthJsonRpc(object):
         if self.tls:
             scheme += 's'
         url = '{}://{}:{}'.format(scheme, self.host, self.port)
+        headers = {'Content-Type': 'application/json'}
         try:
-            r = requests.post(url, data=json.dumps(data))
+            r = requests.post(url, headers=headers, data=json.dumps(data))
         except RequestsConnectionError:
             raise ConnectionError
         if r.status_code / 100 != 2:
