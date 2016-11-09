@@ -705,3 +705,59 @@ class EthJsonRpc(object):
         NEEDS TESTING
         '''
         return self._call('shh_getMessages', [filter_id])
+
+
+class ParityEthJsonRpc(EthJsonRpc):
+    '''
+    EthJsonRpc subclass for Parity-specific methods
+    '''
+
+    def trace_filter(self, from_block=None, to_block=None, from_addresses=None, to_addresses=None):
+        '''
+        https://github.com/ethcore/parity/wiki/JSONRPC-trace-module#trace_filter
+
+        TESTED
+        '''
+        params = {}
+        if from_block is not None:
+            from_block = validate_block(from_block)
+            params['fromBlock'] = from_block
+        if to_block is not None:
+            to_block = validate_block(to_block)
+            params['toBlock'] = to_block
+        if from_addresses is not None:
+            if not isinstance(from_addresses, list):
+                from_addresses = [from_addresses]
+            params['fromAddress'] = from_addresses
+        if to_addresses is not None:
+            if not isinstance(to_addresses, list):
+                to_addresses = [to_addresses]
+            params['toAddress'] = to_addresses
+        return self._call('trace_filter', [params])
+
+    def trace_get(self, tx_hash, positions):
+        '''
+        https://github.com/ethcore/parity/wiki/JSONRPC-trace-module#trace_get
+
+        NEEDS TESTING
+        '''
+        if not isinstance(positions, list):
+            positions = [positions]
+        return self._call('trace_get', [tx_hash, positions])
+
+    def trace_transaction(self, tx_hash):
+        '''
+        https://github.com/ethcore/parity/wiki/JSONRPC-trace-module#trace_transaction
+
+        TESTED
+        '''
+        return self._call('trace_transaction', [tx_hash])
+
+    def trace_block(self, block=BLOCK_TAG_LATEST):
+        '''
+        https://github.com/ethcore/parity/wiki/JSONRPC-trace-module#trace_block
+
+        TESTED
+        '''
+        block = validate_block(block)
+        return self._call('trace_block', [block])
