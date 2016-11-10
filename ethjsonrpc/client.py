@@ -7,13 +7,13 @@ from ethereum import utils
 from ethereum.abi import encode_abi, decode_abi
 
 from ethjsonrpc.constants import BLOCK_TAGS, BLOCK_TAG_LATEST
-from ethjsonrpc.utils import hex_to_dec, validate_block
+from ethjsonrpc.utils import hex_to_dec, clean_hex, validate_block
 from ethjsonrpc.exceptions import (ConnectionError, BadStatusCodeError,
                                    BadJsonError, BadResponseError)
 
 GETH_DEFAULT_RPC_PORT = 8545
 ETH_DEFAULT_RPC_PORT = 8545
-PARITY_DEFAULT_RPC_PORT = 8080
+PARITY_DEFAULT_RPC_PORT = 8545
 PYETHAPP_DEFAULT_RPC_PORT = 4000
 
 
@@ -325,9 +325,9 @@ class EthJsonRpc(object):
         if gas is not None:
             params['gas'] = hex(gas)
         if gas_price is not None:
-            params['gasPrice'] = hex(gas_price)
+            params['gasPrice'] = clean_hex(gas_price)
         if value is not None:
-            params['value'] = hex(value)
+            params['value'] = clean_hex(value)
         if data is not None:
             params['data'] = data
         if nonce is not None:
@@ -359,7 +359,7 @@ class EthJsonRpc(object):
         if gas is not None:
             obj['gas'] = hex(gas)
         if gas_price is not None:
-            obj['gasPrice'] = hex(gas_price)
+            obj['gasPrice'] = clean_hex(gas_price)
         if value is not None:
             obj['value'] = value
         if data is not None:
@@ -384,12 +384,12 @@ class EthJsonRpc(object):
         if gas is not None:
             obj['gas'] = hex(gas)
         if gas_price is not None:
-            obj['gasPrice'] = hex(gas_price)
+            obj['gasPrice'] = clean_hex(gas_price)
         if value is not None:
             obj['value'] = value
         if data is not None:
             obj['data'] = data
-        return self._call('eth_estimateGas', [obj, default_block])
+        return hex_to_dec(self._call('eth_estimateGas', [obj, default_block]))
 
     def eth_getBlockByHash(self, block_hash, tx_objects=True):
         '''
@@ -711,6 +711,9 @@ class ParityEthJsonRpc(EthJsonRpc):
     '''
     EthJsonRpc subclass for Parity-specific methods
     '''
+
+    def __init__(self, host='localhost', port=PARITY_DEFAULT_RPC_PORT, tls=False):
+        EthJsonRpc.__init__(self, host=host, port=port, tls=tls)
 
     def trace_filter(self, from_block=None, to_block=None, from_addresses=None, to_addresses=None):
         '''
