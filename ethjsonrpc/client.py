@@ -389,7 +389,7 @@ class EthJsonRpc(object):
             obj['value'] = value
         if data is not None:
             obj['data'] = data
-        return self._call('eth_estimateGas', [obj, default_block])
+        return hex_to_dec(self._call('eth_estimateGas', [obj, default_block]))
 
     def eth_getBlockByHash(self, block_hash, tx_objects=True):
         '''
