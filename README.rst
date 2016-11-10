@@ -23,8 +23,8 @@ On Ubuntu 16.04:
    $ sudo apt install python-minimal
    $ sudo apt install gcc
    $ sudo apt install virtualenv  # optional but recommended
-   $ apt install libpython-dev
-   $ apt install libssl-dev
+   $ sudo apt install libpython-dev
+   $ sudo apt install libssl-dev
 
 
 On Ubuntu 14.04:
