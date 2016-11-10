@@ -13,7 +13,7 @@ from ethjsonrpc.exceptions import (ConnectionError, BadStatusCodeError,
 
 GETH_DEFAULT_RPC_PORT = 8545
 ETH_DEFAULT_RPC_PORT = 8545
-PARITY_DEFAULT_RPC_PORT = 8080
+PARITY_DEFAULT_RPC_PORT = 8545
 PYETHAPP_DEFAULT_RPC_PORT = 4000
 
 
@@ -711,6 +711,9 @@ class ParityEthJsonRpc(EthJsonRpc):
     '''
     EthJsonRpc subclass for Parity-specific methods
     '''
+
+    def __init__(self, host='localhost', port=PARITY_DEFAULT_RPC_PORT, tls=False):
+        EthJsonRpc.__init__(self, host=host, port=port, tls=tls)
 
     def trace_filter(self, from_block=None, to_block=None, from_addresses=None, to_addresses=None):
         '''
