@@ -3,6 +3,7 @@ import warnings
 
 import requests
 from requests.exceptions import ConnectionError as RequestsConnectionError
+from requests.adapters import HTTPAdapter
 from ethereum import utils
 from ethereum.abi import encode_abi, decode_abi
 
@@ -15,6 +16,7 @@ GETH_DEFAULT_RPC_PORT = 8545
 ETH_DEFAULT_RPC_PORT = 8545
 PARITY_DEFAULT_RPC_PORT = 8545
 PYETHAPP_DEFAULT_RPC_PORT = 4000
+DEFAULT_MAX_RETRIES = 3
 
 
 class EthJsonRpc(object):
@@ -26,6 +28,8 @@ class EthJsonRpc(object):
         self.host = host
         self.port = port
         self.tls = tls
+        self.session = requests.Session()
+        self.session.mount(self.host, HTTPAdapter(max_retries=DEFAULT_MAX_RETRIES))
 
     def _call(self, method, params=None, _id=1):
 
@@ -42,7 +46,7 @@ class EthJsonRpc(object):
         url = '{}://{}:{}'.format(scheme, self.host, self.port)
         headers = {'Content-Type': 'application/json'}
         try:
-            r = requests.post(url, headers=headers, data=json.dumps(data))
+            r = self.session.post(url, headers=headers, data=json.dumps(data))
         except RequestsConnectionError:
             raise ConnectionError
         if r.status_code / 100 != 2:
