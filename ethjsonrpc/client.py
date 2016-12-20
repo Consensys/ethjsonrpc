@@ -512,13 +512,13 @@ class EthJsonRpc(object):
         }
         return self._call('eth_newFilter', [_filter])
 
-    def eth_newBlockFilter(self, default_block=BLOCK_TAG_LATEST):
+    def eth_newBlockFilter(self):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_newblockfilter
 
-        NEEDS TESTING
+        TESTED
         '''
-        return self._call('eth_newBlockFilter', [default_block])
+        return self._call('eth_newBlockFilter')
 
     def eth_newPendingTransactionFilter(self):
         '''
