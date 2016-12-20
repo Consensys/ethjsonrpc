@@ -22,7 +22,7 @@ setup(
         'Programming Language :: Python :: 2',
     ],
     install_requires=[
-        'ethereum==1.0.8',
         'requests==2.9.1',
+        'rlp>=0.4.4',
     ],
 )
