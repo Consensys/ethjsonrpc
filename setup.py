@@ -24,5 +24,8 @@ setup(
     install_requires=[
         'requests==2.9.1',
         'rlp>=0.4.4',
+        'pycryptodome>=3.3.1',
+        'bitcoin',
+        'PyYAML',
     ],
 )
