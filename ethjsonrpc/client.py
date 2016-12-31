@@ -4,8 +4,8 @@ import warnings
 import requests
 from requests.adapters import HTTPAdapter
 from requests.exceptions import ConnectionError as RequestsConnectionError
-from ethereum import utils
-from ethereum.abi import encode_abi, decode_abi
+import ethjsonrpc.ethereum_utils as utils
+from ethjsonrpc.abi import encode_abi, decode_abi
 
 from ethjsonrpc.constants import BLOCK_TAGS, BLOCK_TAG_LATEST
 from ethjsonrpc.utils import hex_to_dec, clean_hex, validate_block
