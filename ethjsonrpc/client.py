@@ -147,7 +147,6 @@ class EthJsonRpc(object):
 
         TESTED
         '''
-        data = str(data).encode('hex')
         return self._call('web3_sha3', [data])
 
     def net_version(self):
