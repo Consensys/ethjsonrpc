@@ -15,6 +15,12 @@ def clean_hex(d):
     '''
     return hex(d).rstrip('L')
 
+def encode_hex(s):
+    '''
+    encode string to hex, adding 0x prefix
+    '''
+    return '0x' + s.encode('hex')
+
 def validate_block(block):
     if isinstance(block, basestring):
         if block not in BLOCK_TAGS:
