@@ -714,6 +714,14 @@ class EthJsonRpc(object):
         '''
         return self._call('shh_getMessages', [filter_id])
 
+    def personal_ecRevoer(self, message, signature):
+        '''
+        https://github.com/ethereum/go-ethereum/wiki/Management-APIs#personal_ecRecover
+
+        NEEDS TESTED
+        '''
+        return self._call('personal_ecRecover', [message, signature])
+
 
 class ParityEthJsonRpc(EthJsonRpc):
     '''
