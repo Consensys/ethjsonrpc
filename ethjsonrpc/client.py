@@ -246,7 +246,10 @@ class EthJsonRpc(object):
         '''
         address = address or self.eth_coinbase()
         block = validate_block(block)
-        return hex_to_dec(self._call('eth_getBalance', [address, block]))
+        bal = self._call('eth_getBalance', [address, block])
+        if bal and bal != '<nil>':
+          return hex_to_dec(bal)
+        return 0
 
     def eth_getStorageAt(self, address=None, position=0, block=BLOCK_TAG_LATEST):
         '''
@@ -264,7 +267,10 @@ class EthJsonRpc(object):
         TESTED
         '''
         block = validate_block(block)
-        return hex_to_dec(self._call('eth_getTransactionCount', [address, block]))
+        hex = self._call('eth_getTransactionCount', [address, block])
+        if hex != None:
+          return hex_to_dec(hex)
+        return 0
 
     def eth_getBlockTransactionCountByHash(self, block_hash):
         '''

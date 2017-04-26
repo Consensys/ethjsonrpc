@@ -5,7 +5,9 @@ def hex_to_dec(x):
     '''
     Convert hex to decimal
     '''
-    return int(x, 16)
+    if x:
+      return int(x, 16)
+    return 0
 
 
 def clean_hex(d):
