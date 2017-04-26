@@ -472,38 +472,6 @@ class EthJsonRpc(object):
         block = validate_block(block)
         return self._call('eth_getUncleByBlockNumberAndIndex', [block, hex(index)])
 
-    def eth_getCompilers(self):
-        '''
-        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getcompilers
-
-        TESTED
-        '''
-        return self._call('eth_getCompilers')
-
-    def eth_compileSolidity(self, code):
-        '''
-        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_compilesolidity
-
-        TESTED
-        '''
-        return self._call('eth_compileSolidity', [code])
-
-    def eth_compileLLL(self, code):
-        '''
-        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_compilelll
-
-        N/A
-        '''
-        return self._call('eth_compileLLL', [code])
-
-    def eth_compileSerpent(self, code):
-        '''
-        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_compileserpent
-
-        N/A
-        '''
-        return self._call('eth_compileSerpent', [code])
-
     def eth_newFilter(self, from_block=BLOCK_TAG_LATEST, to_block=BLOCK_TAG_LATEST, address=None, topics=None):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_newfilter
@@ -589,44 +557,6 @@ class EthJsonRpc(object):
         TESTED
         '''
         return self._call('eth_submitHashrate', [hex(hash_rate), client_id])
-
-    def db_putString(self, db_name, key, value):
-        '''
-        https://github.com/ethereum/wiki/wiki/JSON-RPC#db_putstring
-
-        TESTED
-        '''
-        warnings.warn('deprecated', DeprecationWarning)
-        return self._call('db_putString', [db_name, key, value])
-
-    def db_getString(self, db_name, key):
-        '''
-        https://github.com/ethereum/wiki/wiki/JSON-RPC#db_getstring
-
-        TESTED
-        '''
-        warnings.warn('deprecated', DeprecationWarning)
-        return self._call('db_getString', [db_name, key])
-
-    def db_putHex(self, db_name, key, value):
-        '''
-        https://github.com/ethereum/wiki/wiki/JSON-RPC#db_puthex
-
-        TESTED
-        '''
-        if not value.startswith('0x'):
-            value = '0x{}'.format(value)
-        warnings.warn('deprecated', DeprecationWarning)
-        return self._call('db_putHex', [db_name, key, value])
-
-    def db_getHex(self, db_name, key):
-        '''
-        https://github.com/ethereum/wiki/wiki/JSON-RPC#db_gethex
-
-        TESTED
-        '''
-        warnings.warn('deprecated', DeprecationWarning)
-        return self._call('db_getHex', [db_name, key])
 
     def shh_version(self):
         '''
