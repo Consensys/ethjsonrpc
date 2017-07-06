@@ -1,4 +1,4 @@
-import json, sys
+import json
 import warnings
 
 import requests
