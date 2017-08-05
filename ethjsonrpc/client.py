@@ -113,7 +113,7 @@ class EthJsonRpc(object):
         transaction (useful for reading data)
         '''
         data = self._encode_function(sig, args)
-        data_hex = data.encode('hex')
+        data_hex = '0x' + data.encode('hex')
         response = self.eth_call(to_address=address, data=data_hex)
         return decode_abi(result_types, response[2:].decode('hex'))
 
@@ -125,7 +125,7 @@ class EthJsonRpc(object):
         gas = gas or self.DEFAULT_GAS_PER_TX
         gas_price = gas_price or self.DEFAULT_GAS_PRICE
         data = self._encode_function(sig, args)
-        data_hex = data.encode('hex')
+        data_hex = '0x' + data.encode('hex')
         return self.eth_sendTransaction(from_address=from_, to_address=address, data=data_hex, gas=gas,
                                         gas_price=gas_price, value=value)
 
