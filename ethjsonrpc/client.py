@@ -714,6 +714,22 @@ class EthJsonRpc(object):
         '''
         return self._call('shh_getMessages', [filter_id])
 
+    def miner_start(self):
+        '''
+        undocumented
+
+        NEEDS TESTING
+        '''
+        return self._call('miner_start')
+
+    def miner_stop(self):
+        '''
+        undocumented
+
+        NEEDS TESTING
+        '''
+        return self._call('miner_stop')
+
 
 class ParityEthJsonRpc(EthJsonRpc):
     '''

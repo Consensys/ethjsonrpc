@@ -16,6 +16,8 @@ methods = [
     'eth_getCompilers',
     'eth_newPendingTransactionFilter',
     'eth_getWork',
+    'miner_start',
+    'miner_stop'
 #    'shh_version',
 #    'shh_newIdentity',
 #    'shh_newGroup',
