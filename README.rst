@@ -1,12 +1,12 @@
 InfuraEthJsonRpc
 ==========
-Extension of the [ethjsonrpc](https://github.com/ConsenSys/ethjsonrpc)
+Extension of the ethjsonrpc library (https://github.com/ConsenSys/ethjsonrpc)
 
 * Provides classes to query data from an infura node
-* To speed up the methods, get an [access token](https://infura.io/register.html) from Infura
+* To speed up the methods, get an access token from Infura. (https://infura.io/register.html)
 
-Instructions from ethjsonrpc
-=============================
+Earlier instructions 
+====================
 
 Important note
 --------------
@@ -70,83 +70,37 @@ Additional examples
 
 Please see ``test.py`` for additional examples.
 
-Table of methods
+Table of unavailable methods
 -------------------
-Available methods in the three classes:
+Since this is not a local node, the following methods are unavailable.
 
-JSON-RPC	|	InfuraEthJsonRpc	|	EthJsonRpc	|	ParityEthJsonRpc
----	|	---	|	---	|	---
-	|		|		|	**trace_filter**
-	|		|		|	**trace_get**
-	|		|		|	**trace_transaction**
-	|		|		|	**trace_block**
-	|		|	**call**	|
-	|		|	**call_with_transaction**	|
-	|		|	**create_contract**	|
-	|	**get_contract_address**	|	**get_contract_address**	|
-	|		|	**transfer**	|
-web3_clientVersion	|	web3_clientVersion	|	web3_clientVersion	|	web3_clientVersion
-web3_sha3	|	~~web3_sha3~~	|	web3_sha3	|	web3_sha3
-net_version	|	net_version	|	net_version	|	net_version
-net_listening	|	net_listening	|	net_listening	|	net_listening
-net_peerCount	|	net_peerCount	|	net_peerCount	|	net_peerCount
-eth_protocolVersion	|	eth_protocolVersion	|	eth_protocolVersion	|	eth_protocolVersion
-eth_syncing	|	eth_syncing	|	eth_syncing	|	eth_syncing
-eth_coinbase	|	~~eth_coinbase~~	|	eth_coinbase	|	eth_coinbase
-eth_mining	|	eth_mining	|	eth_mining	|	eth_mining
-eth_hashrate	|	eth_hashrate	|	eth_hashrate	|	eth_hashrate
-eth_gasPrice	|	eth_gasPrice	|	eth_gasPrice	|	eth_gasPrice
-eth_accounts	|	eth_accounts	|	eth_accounts	|	eth_accounts
-eth_blockNumber	|	eth_blockNumber	|	eth_blockNumber	|	eth_blockNumber
-eth_getBalance	|	eth_getBalance	|	eth_getBalance	|	eth_getBalance
-eth_getStorageAt	|	eth_getStorageAt	|	eth_getStorageAt	|	eth_getStorageAt
-eth_getTransactionCount	|	eth_getTransactionCount	|	eth_getTransactionCount	|	eth_getTransactionCount
-eth_getBlockTransactionCountByHash	|	eth_getBlockTransactionCountByHash	|	eth_getBlockTransactionCountByHash	|	eth_getBlockTransactionCountByHash
-eth_getBlockTransactionCountByNumber	|	eth_getBlockTransactionCountByNumber	|	eth_getBlockTransactionCountByNumber	|	eth_getBlockTransactionCountByNumber
-eth_getUncleCountByBlockHash	|	eth_getUncleCountByBlockHash	|	eth_getUncleCountByBlockHash	|	eth_getUncleCountByBlockHash
-eth_getUncleCountByBlockNumber	|	eth_getUncleCountByBlockNumber	|	eth_getUncleCountByBlockNumber	|	eth_getUncleCountByBlockNumber
-eth_getCode	|	eth_getCode	|	eth_getCode	|	eth_getCode
-eth_sign	|	~~eth_sign~~	|	eth_sign	|	eth_sign
-eth_sendTransaction	|	~~eth_sendTransaction~~	|	eth_sendTransaction	|	eth_sendTransaction
-eth_sendRawTransaction	|	eth_sendRawTransaction	|	eth_sendRawTransaction	|	eth_sendRawTransaction
-eth_call	|	eth_call	|	eth_call	|	eth_call
-eth_estimateGas	|	eth_estimateGas	|	eth_estimateGas	|	eth_estimateGas
-eth_getBlockByHash	|	eth_getBlockByHash	|	eth_getBlockByHash	|	eth_getBlockByHash
-eth_getBlockByNumber	|	eth_getBlockByNumber	|	eth_getBlockByNumber	|	eth_getBlockByNumber
-eth_getTransactionByHash	|	eth_getTransactionByHash	|	eth_getTransactionByHash	|	eth_getTransactionByHash
-eth_getTransactionByBlockHashAndIndex	|	eth_getTransactionByBlockHashAndIndex	|	eth_getTransactionByBlockHashAndIndex	|	eth_getTransactionByBlockHashAndIndex
-eth_getTransactionByBlockNumberAndIndex	|	eth_getTransactionByBlockNumberAndIndex	|	eth_getTransactionByBlockNumberAndIndex	|	eth_getTransactionByBlockNumberAndIndex
-eth_getTransactionReceipt	|	eth_getTransactionReceipt	|	eth_getTransactionReceipt	|	eth_getTransactionReceipt
-eth_getUncleByBlockHashAndIndex	|	eth_getUncleByBlockHashAndIndex	|	eth_getUncleByBlockHashAndIndex	|	eth_getUncleByBlockHashAndIndex
-eth_getUncleByBlockNumberAndIndex	|	eth_getUncleByBlockNumberAndIndex	|	eth_getUncleByBlockNumberAndIndex	|	eth_getUncleByBlockNumberAndIndex
-eth_getCompilers	|	eth_getCompilers	|	eth_getCompilers	|	eth_getCompilers
-eth_compileSolidity	|	~~eth_compileSolidity~~	|	eth_compileSolidity	|	eth_compileSolidity
-eth_compileLLL	|	~~eth_compileLLL~~	|	eth_compileLLL	|	eth_compileLLL
-eth_compileSerpent	|	~~eth_compileSerpent~~	|	eth_compileSerpent	|	eth_compileSerpent
-eth_newFilter	|	~~eth_newFilter~~	|	eth_newFilter	|	eth_newFilter
-eth_newBlockFilter	|	~~eth_newBlockFilter~~	|	eth_newBlockFilter	|	eth_newBlockFilter
-eth_newPendingTransactionFilter	|	~~eth_newPendingTransactionFilter~~	|	eth_newPendingTransactionFilter	|	eth_newPendingTransactionFilter
-eth_uninstallFilter	|	~~eth_uninstallFilter~~	|	eth_uninstallFilter	|	eth_uninstallFilter
-eth_getFilterChanges	|	~~eth_getFilterChanges~~	|	eth_getFilterChanges	|	eth_getFilterChanges
-eth_getFilterLogs	|	~~eth_getFilterLogs~~	|	eth_getFilterLogs	|	eth_getFilterLogs
-eth_getLogs	|	eth_getLogs	|	eth_getLogs	|	eth_getLogs
-eth_getWork	|	eth_getWork	|	eth_getWork	|	eth_getWork
-eth_submitWork	|	eth_submitWork	|	eth_submitWork	|	eth_submitWork
-eth_submitHashrate	|	eth_submitHashrate	|	eth_submitHashrate	|	eth_submitHashrate
-db_putString	|	~~db_putString~~	|	db_putString	|	db_putString
-db_getString	|	~~db_getString~~	|	db_getString	|	db_getString
-db_putHex	|	~~db_putHex~~	|	db_putHex	|	db_putHex
-db_getHex	|	~~db_getHex~~	|	db_getHex	|	db_getHex
-shh_version	|	~~shh_version~~	|	shh_version	|	shh_version
-shh_post	|	~~shh_post~~	|	shh_post	|	shh_post
-shh_newIdentity	|	~~shh_newIdentity~~	|	shh_newIdentity	|	shh_newIdentity
-shh_hasIdentity	|	~~shh_hasIdentity~~	|	shh_hasIdentity	|	shh_hasIdentity
-shh_newGroup	|	~~shh_newGroup~~	|	shh_newGroup	|	shh_newGroup
-shh_addToGroup	|	~~shh_addToGroup~~	|	shh_addToGroup	|	shh_addToGroup
-shh_newFilter	|	~~shh_newFilter~~	|	shh_newFilter	|	shh_newFilter
-shh_uninstallFilter	|	~~shh_uninstallFilter~~	|	shh_uninstallFilter	|	shh_uninstallFilter
-shh_getFilterChanges	|	~~shh_getFilterChanges~~	|	shh_getFilterChanges	|	shh_getFilterChanges
-shh_getMessages	|	~~shh_getMessages~~	|	shh_getMessages	|	shh_getMessages
+* 	~~web3_sha3~~
+* 	~~eth_coinbase~~
+* 	~~eth_sign~~
+* 	~~eth_sendTransaction~~
+* 	~~eth_compileSolidity~~
+* 	~~eth_compileLLL~~
+*	~~eth_compileSerpent~~
+* 	~~eth_newFilter~~
+* 	~~eth_newBlockFilter~~
+* 	~~eth_newPendingTransactionFilter~~
+* 	~~eth_uninstallFilter~~
+* 	~~eth_getFilterChanges~~
+* 	~~eth_getFilterLogs~~
+* 	~~db_putString~~
+* 	~~db_getString~~
+* 	~~db_putHex~~
+* 	~~db_getHex~~
+* 	~~shh_version~~
+* 	~~shh_post~~
+* 	~~shh_newIdentity~~
+* 	~~shh_hasIdentity~~
+* 	~~shh_newGroup~~
+* 	~~shh_addToGroup~~
+* 	~~shh_newFilter~~
+* 	~~shh_uninstallFilter~~
+* 	~~shh_getFilterChanges~~
+* 	~~shh_getMessages~~
 
 Reference
 ---------
