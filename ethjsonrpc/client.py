@@ -50,6 +50,7 @@ class EthJsonRpc(object):
         url = '{}://{}:{}'.format(scheme, self.host, self.port)
         headers = {'Content-Type': JSON_MEDIA_TYPE}
         try:
+            # print("Posting data ", json.dumps(data))
             r = self.session.post(url, headers=headers, data=json.dumps(data))
         except RequestsConnectionError:
             raise ConnectionError
@@ -341,6 +342,18 @@ class EthJsonRpc(object):
         if nonce is not None:
             params['nonce'] = hex(nonce)
         return self._call('eth_sendTransaction', [params])
+
+    def personal_newAccount(self, passPhrase):
+        '''
+        https://github.com/ethereum/go-ethereum/wiki/Management-APIs#personal_unlockaccount
+        NEEDS TESTING
+
+        RPC: {"method": "personal_newAccount", "params": [string]}
+        '''
+        params = [
+            passPhrase
+        ]
+        return self._call('personal_newAccount', params)
 
     def personal_unlockAccount(self, address, passPhrase, time):
         '''
