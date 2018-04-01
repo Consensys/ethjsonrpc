@@ -782,6 +782,15 @@ class ParityEthJsonRpc(EthJsonRpc):
         block = validate_block(block)
         return self._call('trace_block', [block])
 
+    def trace_replayTransaction(self, tx_hash, mode='trace'):
+        '''
+        https://wiki.parity.io/JSONRPC-trace-module.html#trace_replaytransaction
+
+        NEEDS TESTING
+        '''
+        return self._call(method='trace_replayTransaction', params=[tx_hash,
+                          [mode]])
+
 
 class InfuraEthJsonRpc(EthJsonRpc):
     '''
@@ -891,7 +900,3 @@ class InfuraEthJsonRpc(EthJsonRpc):
 
     def eth_getCompilers(self):
         raise BadMethodError()
-
-
-
-
