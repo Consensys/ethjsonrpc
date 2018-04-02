@@ -791,6 +791,15 @@ class ParityEthJsonRpc(EthJsonRpc):
         return self._call(method='trace_replayTransaction', params=[tx_hash,
                           [mode]])
 
+    def trace_replayBlockTransactions(self, block=BLOCK_TAG_LATEST, mode='trace'):
+        '''
+        https://wiki.parity.io/JSONRPC-trace-module.html#trace_replayblocktransactions
+
+        NEEDS TESTING
+        '''
+        return self._call(method='trace_replayBlockTransactions',
+                          params=[block, [mode]])
+
 
 class InfuraEthJsonRpc(EthJsonRpc):
     '''
