@@ -797,6 +797,7 @@ class ParityEthJsonRpc(EthJsonRpc):
 
         NEEDS TESTING
         '''
+        block = validate_block(block)
         return self._call(method='trace_replayBlockTransactions',
                           params=[block, [mode]])
 
