@@ -808,9 +808,10 @@ class InfuraEthJsonRpc(EthJsonRpc):
     '''
     def __init__(self, network=DEFAULT_INFURA_NETWORK, infura_token=DEFAULT_INFURA_TOKEN, tls=True):
         if infura_token:
-            host = '{}.infura.io'.format(network)
-        else:
             host = '{}.infura.io/{}'.format(network, infura_token)
+        else:
+            host = '{}.infura.io'.format(network)
+
         EthJsonRpc.__init__(self, host=host, tls=tls, node='infura')
 
     # methods to disable unavailable functions
