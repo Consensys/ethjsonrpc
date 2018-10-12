@@ -306,7 +306,7 @@ class EthJsonRpc(object):
 
         NEEDS TESTING
         '''
-        if isinstance(default_block, basestring):
+        if isinstance(default_block, str):
             if default_block not in BLOCK_TAGS:
                 raise ValueError
         return self._call('eth_getCode', [address, default_block])
@@ -357,7 +357,7 @@ class EthJsonRpc(object):
 
         NEEDS TESTING
         '''
-        if isinstance(default_block, basestring):
+        if isinstance(default_block, str):
             if default_block not in BLOCK_TAGS:
                 raise ValueError
         obj = {}
@@ -381,7 +381,7 @@ class EthJsonRpc(object):
 
         NEEDS TESTING
         '''
-        if isinstance(default_block, basestring):
+        if isinstance(default_block, str):
             if default_block not in BLOCK_TAGS:
                 raise ValueError
         obj = {}
