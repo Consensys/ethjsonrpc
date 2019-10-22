@@ -23,6 +23,6 @@ setup(
     ],
     install_requires=[
         'ethereum==1.0.8',
-        'requests==2.9.1',
+        'requests==2.20.0',
     ],
 )
