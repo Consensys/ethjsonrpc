@@ -16,6 +16,16 @@ Installation
 
 You may need additional libraries and tools before installing ethjsonrpc.
 
+On Ubuntu 20.04:
+
+.. code:: bash
+
+   $ sudo apt install python2-minimal
+   $ sudo apt install gcc
+   $ sudo apt install virtualenv  # optional but recommended
+   $ sudo apt install libpython2-dev
+   $ sudo apt install libssl-dev
+
 On Ubuntu 16.04:
 
 .. code:: bash
