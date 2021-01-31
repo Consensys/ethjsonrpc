@@ -113,7 +113,7 @@ class EthJsonRpc(object):
         transaction (useful for reading data)
         '''
         data = self._encode_function(sig, args)
-        data_hex = data.encode('hex')
+        data_hex = '0x{0}'.format(data.encode('hex'))
         response = self.eth_call(to_address=address, data=data_hex)
         return decode_abi(result_types, response[2:].decode('hex'))
 
@@ -713,6 +713,14 @@ class EthJsonRpc(object):
         NEEDS TESTING
         '''
         return self._call('shh_getMessages', [filter_id])
+
+    def personal_ecRevoer(self, message, signature):
+        '''
+        https://github.com/ethereum/go-ethereum/wiki/Management-APIs#personal_ecRecover
+
+        NEEDS TESTED
+        '''
+        return self._call('personal_ecRecover', [message, signature])
 
 
 class ParityEthJsonRpc(EthJsonRpc):
