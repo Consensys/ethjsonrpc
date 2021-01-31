@@ -4,6 +4,7 @@ import warnings
 import requests
 from requests.adapters import HTTPAdapter
 from requests.exceptions import ConnectionError as RequestsConnectionError
+from past.builtins import basestring
 from ethereum import utils
 from ethereum.abi import encode_abi, decode_abi
 
