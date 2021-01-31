@@ -40,9 +40,9 @@ class EthJsonRpc(object):
         params = params or []
         data = {
             'jsonrpc': '2.0',
-            'method':  method,
-            'params':  params,
-            'id':      _id,
+            'method': method,
+            'params': params,
+            'id': _id,
         }
         scheme = 'http'
         if self.tls:
@@ -50,6 +50,7 @@ class EthJsonRpc(object):
         url = '{}://{}:{}'.format(scheme, self.host, self.port)
         headers = {'Content-Type': JSON_MEDIA_TYPE}
         try:
+            # print("Posting data ", json.dumps(data))
             r = self.session.post(url, headers=headers, data=json.dumps(data))
         except RequestsConnectionError:
             raise ConnectionError
@@ -95,9 +96,9 @@ class EthJsonRpc(object):
         '''
         from_ = from_ or self.eth_coinbase()
         if sig is not None and args is not None:
-             types = sig[sig.find('(') + 1: sig.find(')')].split(',')
-             encoded_params = encode_abi(types, args)
-             code += encoded_params.encode('hex')
+            types = sig[sig.find('(') + 1: sig.find(')')].split(',')
+            encoded_params = encode_abi(types, args)
+            code += encoded_params.encode('hex')
         return self.eth_sendTransaction(from_address=from_, gas=gas, data=code)
 
     def get_contract_address(self, tx):
@@ -342,6 +343,32 @@ class EthJsonRpc(object):
             params['nonce'] = hex(nonce)
         return self._call('eth_sendTransaction', [params])
 
+    def personal_newAccount(self, passPhrase):
+        '''
+        https://github.com/ethereum/go-ethereum/wiki/Management-APIs#personal_unlockaccount
+        NEEDS TESTING
+
+        RPC: {"method": "personal_newAccount", "params": [string]}
+        '''
+        params = [
+            passPhrase
+        ]
+        return self._call('personal_newAccount', params)
+
+    def personal_unlockAccount(self, address, passPhrase, time):
+        '''
+        https://github.com/ethereum/go-ethereum/wiki/Management-APIs#personal_unlockaccount
+        NEEDS TESTING
+
+        RPC: {"method": "personal_unlockAccount", "params": [string, string, number]}
+        '''
+        params = [
+            address,
+            passPhrase,
+            time
+        ]
+        return self._call('personal_unlockAccount', params)
+
     def eth_sendRawTransaction(self, data):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_sendrawtransaction
@@ -506,9 +533,9 @@ class EthJsonRpc(object):
         '''
         _filter = {
             'fromBlock': from_block,
-            'toBlock':   to_block,
-            'address':   address,
-            'topics':    topics,
+            'toBlock': to_block,
+            'address': address,
+            'topics': topics,
         }
         return self._call('eth_newFilter', [_filter])
 
@@ -637,12 +664,12 @@ class EthJsonRpc(object):
         NEEDS TESTING
         '''
         whisper_object = {
-            'from':     from_,
-            'to':       to,
-            'topics':   topics,
-            'payload':  payload,
+            'from': from_,
+            'to': to,
+            'topics': topics,
+            'payload': payload,
             'priority': hex(priority),
-            'ttl':      hex(ttl),
+            'ttl': hex(ttl),
         }
         return self._call('shh_post', [whisper_object])
 
@@ -685,7 +712,7 @@ class EthJsonRpc(object):
         NEEDS TESTING
         '''
         _filter = {
-            'to':     to,
+            'to': to,
             'topics': topics,
         }
         return self._call('shh_newFilter', [_filter])
