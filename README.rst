@@ -187,7 +187,6 @@ Implemented JSON-RPC methods
 * eth_getTransactionReceipt
 * eth_getUncleByBlockHashAndIndex
 * eth_getUncleByBlockNumberAndIndex
-* eth_getCompilers
 * eth_compileSolidity
 * eth_compileLLL
 * eth_compileSerpent
@@ -201,10 +200,6 @@ Implemented JSON-RPC methods
 * eth_getWork
 * eth_submitWork
 * eth_submitHashrate
-* db_putString
-* db_getString
-* db_putHex
-* db_getHex
 * shh_version
 * shh_post
 * shh_newIdentity

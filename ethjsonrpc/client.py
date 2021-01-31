@@ -113,7 +113,7 @@ class EthJsonRpc(object):
         transaction (useful for reading data)
         '''
         data = self._encode_function(sig, args)
-        data_hex = data.encode('hex')
+        data_hex = '0x'+data.encode('hex')
         response = self.eth_call(to_address=address, data=data_hex)
         return decode_abi(result_types, response[2:].decode('hex'))
 
@@ -125,7 +125,7 @@ class EthJsonRpc(object):
         gas = gas or self.DEFAULT_GAS_PER_TX
         gas_price = gas_price or self.DEFAULT_GAS_PRICE
         data = self._encode_function(sig, args)
-        data_hex = data.encode('hex')
+        data_hex = '0x'+data.encode('hex')
         return self.eth_sendTransaction(from_address=from_, to_address=address, data=data_hex, gas=gas,
                                         gas_price=gas_price, value=value)
 
@@ -246,7 +246,10 @@ class EthJsonRpc(object):
         '''
         address = address or self.eth_coinbase()
         block = validate_block(block)
-        return hex_to_dec(self._call('eth_getBalance', [address, block]))
+        bal = self._call('eth_getBalance', [address, block])
+        if bal and bal != '<nil>':
+          return hex_to_dec(bal)
+        return 0
 
     def eth_getStorageAt(self, address=None, position=0, block=BLOCK_TAG_LATEST):
         '''
@@ -264,7 +267,10 @@ class EthJsonRpc(object):
         TESTED
         '''
         block = validate_block(block)
-        return hex_to_dec(self._call('eth_getTransactionCount', [address, block]))
+        hex = self._call('eth_getTransactionCount', [address, block])
+        if hex != None:
+          return hex_to_dec(hex)
+        return 0
 
     def eth_getBlockTransactionCountByHash(self, block_hash):
         '''
@@ -466,38 +472,6 @@ class EthJsonRpc(object):
         block = validate_block(block)
         return self._call('eth_getUncleByBlockNumberAndIndex', [block, hex(index)])
 
-    def eth_getCompilers(self):
-        '''
-        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getcompilers
-
-        TESTED
-        '''
-        return self._call('eth_getCompilers')
-
-    def eth_compileSolidity(self, code):
-        '''
-        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_compilesolidity
-
-        TESTED
-        '''
-        return self._call('eth_compileSolidity', [code])
-
-    def eth_compileLLL(self, code):
-        '''
-        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_compilelll
-
-        N/A
-        '''
-        return self._call('eth_compileLLL', [code])
-
-    def eth_compileSerpent(self, code):
-        '''
-        https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_compileserpent
-
-        N/A
-        '''
-        return self._call('eth_compileSerpent', [code])
-
     def eth_newFilter(self, from_block=BLOCK_TAG_LATEST, to_block=BLOCK_TAG_LATEST, address=None, topics=None):
         '''
         https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_newfilter
@@ -583,44 +557,6 @@ class EthJsonRpc(object):
         TESTED
         '''
         return self._call('eth_submitHashrate', [hex(hash_rate), client_id])
-
-    def db_putString(self, db_name, key, value):
-        '''
-        https://github.com/ethereum/wiki/wiki/JSON-RPC#db_putstring
-
-        TESTED
-        '''
-        warnings.warn('deprecated', DeprecationWarning)
-        return self._call('db_putString', [db_name, key, value])
-
-    def db_getString(self, db_name, key):
-        '''
-        https://github.com/ethereum/wiki/wiki/JSON-RPC#db_getstring
-
-        TESTED
-        '''
-        warnings.warn('deprecated', DeprecationWarning)
-        return self._call('db_getString', [db_name, key])
-
-    def db_putHex(self, db_name, key, value):
-        '''
-        https://github.com/ethereum/wiki/wiki/JSON-RPC#db_puthex
-
-        TESTED
-        '''
-        if not value.startswith('0x'):
-            value = '0x{}'.format(value)
-        warnings.warn('deprecated', DeprecationWarning)
-        return self._call('db_putHex', [db_name, key, value])
-
-    def db_getHex(self, db_name, key):
-        '''
-        https://github.com/ethereum/wiki/wiki/JSON-RPC#db_gethex
-
-        TESTED
-        '''
-        warnings.warn('deprecated', DeprecationWarning)
-        return self._call('db_getHex', [db_name, key])
 
     def shh_version(self):
         '''
