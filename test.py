@@ -1,4 +1,4 @@
-from ethjsonrpc import EthJsonRpc
+from ethjsonrpc import InfuraEthJsonRpc
 
 methods = [
     'web3_clientVersion',
@@ -7,21 +7,20 @@ methods = [
     'net_listening',
     'eth_protocolVersion',
     'eth_syncing',
-    'eth_coinbase',
     'eth_mining',
     'eth_hashrate',
     'eth_gasPrice',
     'eth_accounts',
     'eth_blockNumber',
-    'eth_getCompilers',
-    'eth_newPendingTransactionFilter',
-    'eth_getWork',
+#    'eth_getCompilers',
+#    'eth_newPendingTransactionFilter',
+#    'eth_getWork',
 #    'shh_version',
 #    'shh_newIdentity',
 #    'shh_newGroup',
 ]
 
-c = EthJsonRpc()
+c = InfuraEthJsonRpc()
 print len(methods)
 for m in methods:
     meth = getattr(c, m)
@@ -44,7 +43,6 @@ for x in ['earliest', 'latest', 'pending', b[0]]:
     result = c.eth_getBlockTransactionCountByNumber(x)
     print 'eth_getBlockTransactionCountByNumber: %s (%s)' % (result, type(result))
 
-
 b = (199583, '0x19d761c6f944eefe91ad70b9aff3d2d76c972e5bb68c443eea7c0eaa144cef9f')
 result = c.eth_getUncleCountByBlockHash(b[1])
 print 'eth_getUncleCountByBlockHash: %s (%s)' % (result, type(result))
@@ -52,25 +50,6 @@ print 'eth_getUncleCountByBlockHash: %s (%s)' % (result, type(result))
 for x in ['earliest', 'latest', 'pending', b[0]]:
     result = c.eth_getUncleCountByBlockNumber(x)
     print 'eth_getUncleCountByBlockNumber: %s (%s)' % (result, type(result))
-
-################################################################################
-print '*' * 80
-
-db_name = 'db_name'
-k = 'my_key'
-v = 'my_value'
-print c.db_putString(db_name, k, v)
-x = c.db_getString(db_name, k)
-print x
-assert v == x
-
-db_name = 'db_name'
-k = 'my_key'
-v = '0xabcdef'
-print c.db_putHex(db_name, k, v)
-x = c.db_getHex(db_name, k)
-print x
-assert v == x
 
 ################################################################################
 print '*' * 80
@@ -83,18 +62,6 @@ for x in ['earliest', 'latest', 'pending', b[0]]:
 
 tx = '0x12cd5d9a82049154c8990214a551479853d1bfe45852688833bc4ef86a29b1a3'
 print c.eth_getTransactionByHash(tx)
-
-################################################################################
-print '*' * 80
-
-code = 'contract Test {}'
-print c.eth_compileSolidity(code)
-
-#code = ''
-#print c.eth_compileSerpent(code)
-
-#code = ''
-#print c.eth_compileLLL(code)
 
 ################################################################################
 print '*' * 80
@@ -134,7 +101,3 @@ hash_rate = 1000000
 client_id = '0x59daa26581d0acd1fce254fb7e85952f4c09d0915afd33d3886cd914bc7d283c'
 print c.eth_submitHashrate(hash_rate, client_id)
 
-digest = c.web3_sha3('')
-print digest
-# keccak-256, not sha3-256
-assert digest == '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470'

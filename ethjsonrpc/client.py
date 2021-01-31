@@ -10,7 +10,7 @@ from ethereum.abi import encode_abi, decode_abi
 from ethjsonrpc.constants import BLOCK_TAGS, BLOCK_TAG_LATEST
 from ethjsonrpc.utils import hex_to_dec, clean_hex, validate_block
 from ethjsonrpc.exceptions import (ConnectionError, BadStatusCodeError,
-                                   BadJsonError, BadResponseError)
+                                   BadJsonError, BadResponseError, BadMethodError)
 
 GETH_DEFAULT_RPC_PORT = 8545
 ETH_DEFAULT_RPC_PORT = 8545
@@ -18,6 +18,9 @@ PARITY_DEFAULT_RPC_PORT = 8545
 PYETHAPP_DEFAULT_RPC_PORT = 4000
 MAX_RETRIES = 3
 JSON_MEDIA_TYPE = 'application/json'
+DEFAULT_NODE = 'local'
+DEFAULT_INFURA_NETWORK = 'mainnet'
+DEFAULT_INFURA_TOKEN = ""
 
 
 class EthJsonRpc(object):
@@ -26,31 +29,38 @@ class EthJsonRpc(object):
     '''
 
     DEFAULT_GAS_PER_TX = 90000
-    DEFAULT_GAS_PRICE = 50 * 10**9  # 50 gwei
+    DEFAULT_GAS_PRICE = 50 * 10 ** 9  # 50 gwei
 
-    def __init__(self, host='localhost', port=GETH_DEFAULT_RPC_PORT, tls=False):
+    def __init__(self, host='localhost', port=GETH_DEFAULT_RPC_PORT, tls=False, node=DEFAULT_NODE):
         self.host = host
         self.port = port
         self.tls = tls
+
         self.session = requests.Session()
         self.session.mount(self.host, HTTPAdapter(max_retries=MAX_RETRIES))
+
+        scheme = 'http'
+        if self.tls:
+            scheme += 's'
+
+        if node == 'local':
+            self.url = '{}://{}:{}'.format(scheme, self.host, self.port)
+        elif node == 'infura':
+            self.url = '{}://{}'.format(scheme, self.host)
 
     def _call(self, method, params=None, _id=1):
 
         params = params or []
         data = {
             'jsonrpc': '2.0',
-            'method':  method,
-            'params':  params,
-            'id':      _id,
+            'method': method,
+            'params': params,
+            'id': _id,
         }
-        scheme = 'http'
-        if self.tls:
-            scheme += 's'
-        url = '{}://{}:{}'.format(scheme, self.host, self.port)
+
         headers = {'Content-Type': JSON_MEDIA_TYPE}
         try:
-            r = self.session.post(url, headers=headers, data=json.dumps(data))
+            r = self.session.post(self.url, headers=headers, data=json.dumps(data))
         except RequestsConnectionError:
             raise ConnectionError
         if r.status_code / 100 != 2:
@@ -78,9 +88,9 @@ class EthJsonRpc(object):
         encoded_params = encode_abi(types, param_values)
         return utils.zpad(utils.encode_int(prefix), 4) + encoded_params
 
-################################################################################
-# high-level methods
-################################################################################
+    ################################################################################
+    # high-level methods
+    ################################################################################
 
     def transfer(self, from_, to, amount):
         '''
@@ -95,9 +105,9 @@ class EthJsonRpc(object):
         '''
         from_ = from_ or self.eth_coinbase()
         if sig is not None and args is not None:
-             types = sig[sig.find('(') + 1: sig.find(')')].split(',')
-             encoded_params = encode_abi(types, args)
-             code += encoded_params.encode('hex')
+            types = sig[sig.find('(') + 1: sig.find(')')].split(',')
+            encoded_params = encode_abi(types, args)
+            code += encoded_params.encode('hex')
         return self.eth_sendTransaction(from_address=from_, gas=gas, data=code)
 
     def get_contract_address(self, tx):
@@ -129,9 +139,9 @@ class EthJsonRpc(object):
         return self.eth_sendTransaction(from_address=from_, to_address=address, data=data_hex, gas=gas,
                                         gas_price=gas_price, value=value)
 
-################################################################################
-# JSON-RPC methods
-################################################################################
+    ################################################################################
+    # JSON-RPC methods
+    ################################################################################
 
     def web3_clientVersion(self):
         '''
@@ -506,9 +516,9 @@ class EthJsonRpc(object):
         '''
         _filter = {
             'fromBlock': from_block,
-            'toBlock':   to_block,
-            'address':   address,
-            'topics':    topics,
+            'toBlock': to_block,
+            'address': address,
+            'topics': topics,
         }
         return self._call('eth_newFilter', [_filter])
 
@@ -637,12 +647,12 @@ class EthJsonRpc(object):
         NEEDS TESTING
         '''
         whisper_object = {
-            'from':     from_,
-            'to':       to,
-            'topics':   topics,
-            'payload':  payload,
+            'from': from_,
+            'to': to,
+            'topics': topics,
+            'payload': payload,
             'priority': hex(priority),
-            'ttl':      hex(ttl),
+            'ttl': hex(ttl),
         }
         return self._call('shh_post', [whisper_object])
 
@@ -685,7 +695,7 @@ class EthJsonRpc(object):
         NEEDS TESTING
         '''
         _filter = {
-            'to':     to,
+            'to': to,
             'topics': topics,
         }
         return self._call('shh_newFilter', [_filter])
@@ -714,14 +724,13 @@ class EthJsonRpc(object):
         '''
         return self._call('shh_getMessages', [filter_id])
 
-
 class ParityEthJsonRpc(EthJsonRpc):
     '''
     EthJsonRpc subclass for Parity-specific methods
     '''
 
     def __init__(self, host='localhost', port=PARITY_DEFAULT_RPC_PORT, tls=False):
-        EthJsonRpc.__init__(self, host=host, port=port, tls=tls)
+        EthJsonRpc.__init__(self, host=host, port=port, tls=tls, node=DEFAULT_NODE)
 
     def trace_filter(self, from_block=None, to_block=None, from_addresses=None, to_addresses=None):
         '''
@@ -772,3 +781,133 @@ class ParityEthJsonRpc(EthJsonRpc):
         '''
         block = validate_block(block)
         return self._call('trace_block', [block])
+
+    def trace_replayTransaction(self, tx_hash, mode='trace'):
+        '''
+        https://wiki.parity.io/JSONRPC-trace-module.html#trace_replaytransaction
+
+        NEEDS TESTING
+        '''
+        return self._call(method='trace_replayTransaction', params=[tx_hash,
+                          [mode]])
+
+    def trace_replayBlockTransactions(self, block=BLOCK_TAG_LATEST, mode='trace'):
+        '''
+        https://wiki.parity.io/JSONRPC-trace-module.html#trace_replayblocktransactions
+
+        NEEDS TESTING
+        '''
+        block = validate_block(block)
+        return self._call(method='trace_replayBlockTransactions',
+                          params=[block, [mode]])
+
+
+class InfuraEthJsonRpc(EthJsonRpc):
+    '''
+    EthJsonRpc subclass for Infura-specific methods
+    '''
+    def __init__(self, network=DEFAULT_INFURA_NETWORK, infura_token=DEFAULT_INFURA_TOKEN, tls=True):
+        if infura_token:
+            host = '{}.infura.io/{}'.format(network, infura_token)
+        else:
+            host = '{}.infura.io'.format(network)
+
+        EthJsonRpc.__init__(self, host=host, tls=tls, node='infura')
+
+    # methods to disable unavailable functions
+    def call(self, address, sig, args, result_types):
+        raise BadMethodError()
+
+    def call_with_transaction(self, from_, address, sig, args, gas=None, gas_price=None, value=None):
+        raise BadMethodError()
+
+    def create_contract(self, from_, code, gas, sig=None, args=None):
+        raise BadMethodError()
+
+    def transfer(self, from_, to, amount):
+        raise BadMethodError()
+
+    def web3_sha3(self, data):
+        raise BadMethodError()
+
+    def eth_coinbase(self):
+        raise BadMethodError()
+
+    def eth_sign(self, address, data):
+        raise BadMethodError()
+
+    def eth_sendTransaction(self, to_address=None, from_address=None, gas=None, gas_price=None, value=None, data=None,
+                            nonce=None):
+        raise BadMethodError()
+
+    def eth_compileSolidity(self, code):
+        raise BadMethodError()
+
+    def eth_compileLLL(self, code):
+        raise BadMethodError()
+
+    def eth_compileSerpent(self, code):
+        raise BadMethodError()
+
+    def eth_newFilter(self, from_block=BLOCK_TAG_LATEST, to_block=BLOCK_TAG_LATEST, address=None, topics=None):
+        raise BadMethodError()
+
+    def eth_newBlockFilter(self):
+        raise BadMethodError()
+
+    def eth_newPendingTransactionFilter(self):
+        raise BadMethodError()
+
+    def eth_uninstallFilter(self, filter_id):
+        raise BadMethodError()
+
+    def eth_getFilterChanges(self, filter_id):
+        raise BadMethodError()
+
+    def eth_getFilterLogs(self, filter_id):
+        raise BadMethodError()
+
+    def db_putString(self, db_name, key, value):
+        raise BadMethodError()
+
+    def db_getString(self, db_name, key):
+        raise BadMethodError()
+
+    def db_putHex(self, db_name, key, value):
+        raise BadMethodError()
+
+    def db_getHex(self, db_name, key):
+        raise BadMethodError()
+
+    def shh_version(self):
+        raise BadMethodError()
+
+    def shh_post(self, topics, payload, priority, ttl, from_=None, to=None):
+        raise BadMethodError()
+
+    def shh_newIdentity(self):
+        raise BadMethodError()
+
+    def shh_hasIdentity(self, address):
+        raise BadMethodError()
+
+    def shh_newGroup(self):
+        raise BadMethodError()
+
+    def shh_addToGroup(self):
+        raise BadMethodError()
+
+    def shh_newFilter(self, to, topics):
+        raise BadMethodError()
+
+    def shh_uninstallFilter(self, filter_id):
+        raise BadMethodError()
+
+    def shh_getFilterChanges(self, filter_id):
+        raise BadMethodError()
+
+    def shh_getMessages(self, filter_id):
+        raise BadMethodError()
+
+    def eth_getCompilers(self):
+        raise BadMethodError()
