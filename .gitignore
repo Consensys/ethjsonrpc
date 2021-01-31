@@ -1,1 +1,10 @@
 *.py[co]
+*.bin
+.cache/
+.tern-port
+.tox/
+ethjsonrpc.egg-info/
+geth.log
+**/geth
+**/history
+**/keystore
