@@ -236,4 +236,4 @@ Reference
 ---------
 
 * https://github.com/ethereum/wiki/wiki/JSON-RPC
-* https://github.com/ethcore/parity/wiki/JSONRPC-trace-module
+* https://github.com/paritytech/parity/wiki/JSONRPC-trace-module
